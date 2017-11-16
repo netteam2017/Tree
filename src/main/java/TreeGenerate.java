@@ -1,4 +1,5 @@
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Map;
 
 /**
@@ -24,6 +25,7 @@ public class TreeGenerate {
     public TreeGenerate(int data, ArrayList<Node> child){
         if (id==null){
             this.head=new Node(data,child);
+            this.id=new HashMap<>();
             this.id.put(0,this.head);
             this.quantity=1;
             for (int i=0;i<child.size();i++){ //записываем детей в карту

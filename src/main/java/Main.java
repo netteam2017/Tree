@@ -20,7 +20,7 @@ public class Main {
         System.out.println(Tree.getIdOfObject(0).getData());
         System.out.println(Tree.getIdOfObject(1).getData());
         System.out.println(Tree.getIdOfObject(2).getData());
-        System.out.println(Tree.getIdOfObject(3).getData());
+//        System.out.println(Tree.getIdOfObject(3).getData());
 
 
 
