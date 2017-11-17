@@ -18,6 +18,7 @@ public class Node {
         this.data = data;
     }
 
+
     public int getData(){
         return this.data;
     };
@@ -27,9 +28,19 @@ public class Node {
     public ArrayList<Node> getChild(){
         return this.child;
     };
-    public void setChild(ArrayList<Node> child){
-        this.child=child;
+    public void setChildList(ArrayList<Node> children){
+        this.child=children;
     };
+    public void setChild(Node child){
+        this.child.add(this.child.size(),child);
+    }
+
+
+    public String toString(){
+        //String res = String.join(",",this.getChild());
+        return  "Node : data = "+this.getData()+" children = ["+this.getChild()+"]";
+
+    }
 
 
 }
