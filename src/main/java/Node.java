@@ -35,12 +35,21 @@ public class Node {
         this.child.add(this.child.size(),child);
     }
 
+    @Override
+    public String toString() {
+        return "Node{" +
+                "child=" + child +
+                ", data=" + data +
+                '}';
+    }
 
-    public String toString(){
+
+/*     public String toString(){
         //String res = String.join(",",this.getChild());
+
         return  "Node : data = "+this.getData()+" children = ["+this.getChild()+"]";
 
-    }
+    }*/
 
 
 }
