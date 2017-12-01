@@ -1,6 +1,6 @@
-import sun.reflect.generics.tree.Tree;
-
 import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.Set;
 
 /**
  * Created by user on 15.11.2017.
@@ -9,44 +9,45 @@ public class Main {
     public static void main(String[] args){
 
         Node nodeTest = new Node();
-        Node node = new Node(0,null);
-        Node node1 = new Node(1,null);
-        Node node2 = new Node(2,null);
-        Node node3 = new Node(3,null);
+        Node node1 = new Node(1);
+        Node node2 = new Node(2);
+        Node node3=new Node (3);
+        Node node4=new Node(4);
+        Node node5=new Node(5);
+        Node node6=new Node(6);
+        Node node7=new Node(7);
 
-        Node node4 = new Node(44,null);
-        Node node5 = new Node(55,null);
-        Node node6 = new Node(66,null);
-        Node node7 = new Node(77,null);
-        Node node8 = new Node(88,null);
+        Hierarchy rel = new Hierarchy();
 
+        Set<Node> children = new HashSet<>();
+        children.add(node2);
+        children.add(node3);
 
-        Node head=null;
-
-        ArrayList<Node> nodes = new ArrayList<Node>();
-        nodes.add(0,node);
-        nodes.add(1,node1);
-        nodes.add(2,node2);
-        nodes.add(3,node3);
+        Set<Node> children2 = new HashSet<>();
+        children2.add(node4);
+        children2.add(node5);
 
 
+         rel.setChildren(node1,children);
+        rel.setParent(node3,node2);
+        rel.setChildren(node2,children2);
 
 
 
-        TreeGenerate Tree1 = new TreeGenerate(node7,nodes);
+        Tree tree1= new Tree(node1);
 
-        Tree1.addNode(node8,1);
-        //    Tree2.getHead().getChild().get(1).setChildList(nodes2);
-         System.out.println(Tree1.getIdOfObject(0).getData());
-         System.out.println(Tree1.getIdOfObject(1).getData());
 
-        System.out.println(Tree1.getIdOfObject(2).getData());
-        System.out.println(Tree1.getIdOfObject(3).getData());
+      // System.out.print(tree1.getNodeMap().containsKey(new Id(1,1)));
+        tree1.addNode(node4,1,1);
+        tree1.addNode(node3,1,1);
+        tree1.addNode(node5,2,1);
+        tree1.addNode(node6,3,1);
+        //tree1.addNode(node7,3,1);
+        tree1.addNode(node5,1,1);
+       // System.out.println(tree1.getIdOfNode(node5).getHeight());
+        tree1.addNode(node7,3,2);
+       System.out.println(tree1.getRelations());
 
-        System.out.println(Tree1.getNodeOnNumber(4).getData());
-//  System.out.println(Tree.getIdOfObject(2).getData());
-        System.out.print(node);
-//        System.out.println(Tree.getIdOfObject(3).getData());
 
 
 
