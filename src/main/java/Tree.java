@@ -15,6 +15,7 @@ public class Tree {
             this.relations = new Hierarchy();
             this.nodeMap = new HashMap<>();
             relations.setRelHead(this.head);
+            relations.setChildren(this.head,null);
 
 
             this.nodeMap.put(new Id(1, 1), head);
@@ -23,6 +24,7 @@ public class Tree {
             System.out.print("Error. Tree already exist");
         }
     }
+
     public Tree() {
         if (nodeMap == null) {
             this.head = new Node();
@@ -116,170 +118,149 @@ public class Tree {
         return quantity;
     }
 
+    public void deleteNode(int height,int number) {
+        ArrayList<Node> newnode= new ArrayList<>();
+        int i=0;
+        if ((height < 1) | (number < 1)) {
+            throw new IndexOutOfBoundsException("Error! Wrong index! Index must be >1 ");
+        } else {
+
+
+            if (getRelations().getChildren(getNodeOnNumber(height, number))!=null) {
+                Iterator<Node> iterator = getRelations().getChildren(getNodeOnNumber(height, number)).iterator();
+
+                while (iterator.hasNext()) {
+                    newnode.add(i,iterator.next());
+                    i++;
+
+
+//                    System.out.print("del " + getIdOfNode(newnode.get(i)).getHeight() + getIdOfNode(newnode.get(i)).getNumber());
+                }
+                for (int k=0;k<newnode.size();k++)
+                    deleteNode(getIdOfNode(newnode.get(k)).getHeight(), getIdOfNode(newnode.get(k)).getNumber());
+
+                getRelations().deleteChild(getRelations().getParent(getNodeOnNumber(height, number)), getNodeOnNumber(height, number));
+                getRelations().deleteParent(getNodeOnNumber(height, number));
+                getNodeMap().remove(new Id(height,number));
+
+            }else{
+                System.out.print("tyt ");
+                getRelations().deleteChild(getRelations().getParent(getNodeOnNumber(height, number)), getNodeOnNumber(height, number));
+                getRelations().deleteParent(getNodeOnNumber(height, number));
+                getNodeMap().remove(new Id(height,number));
+
+
+            }
+        }
+    }
 
 
 
-    public void addNode(Node node,int heightParent, int numberParent) {
-        if((heightParent<1)|(numberParent<1)){
+
+    public void addNode(Node node,int heightParent, int numberParent) { //good
+        Node child = new Node();
+        if ((heightParent < 1) | (numberParent < 1)) {
             throw new IndexOutOfBoundsException("Error! Wrong index! Index must be >1 ");
 
-        }
-        Id id = new Id(heightParent,numberParent);
-        Set<Node> nodeSet = new HashSet<Node>();
-        nodeSet.add(node);
-        if (getNodeMap().containsKey(id)==true) {
-
-            if (getRelations().getChildren(getNodeMap().get(id))==null){
-                getRelations().setChildren(getNodeOnNumber(heightParent,numberParent),new HashSet<Node>());
-            }
-            getRelations().setChildren(getNodeOnNumber(heightParent,numberParent),nodeSet);
-            getRelations().setParent(node,getNodeOnNumber(heightParent,numberParent));
-        }
-        setNodeMap(node);
-
-        if(getRelations().getChildren(node)!=null)
-
-            for (Node s: getRelations().getChildren(node)){
-                System.out.print(getIdOfNode(node).getNumber());
-                addNode(s,getIdOfNode(node).getHeight(),getIdOfNode(node).getNumber()-1);
-            }
-
-        //добавление в карту доделать!
-
-    }
-
-    @Override
-    public String toString() {
-        return "Tree{" +
-                "head=" + head +
-                //", relations=" + relations +
-
-                '}';
-    }
-}
-/*
-    public void refreshNodeMap(int number, int quantity,Node node) {
-        int size=getNodeMap().size();
-        for(int i=1;i<=number;i++) {
-            setNodeMap(size + quantity - i, getNodeOnNumber(size - i));
-        }
-        setNodeMap(number,node);
-    }
-
-    public void deleteNode(int numberNode){
-        if(getNodeMap().containsKey(numberNode)==true){
-            for (int i=0;i<getNodeOnNumber(numberNode).getParent().getChildren().size();i++)
-            if(getNodeOnNumber(numberNode).getParent().getChildren().get(i)==getNodeOnNumber(numberNode)){
-                getNodeOnNumber(numberNode).getParent().getChildren().remove(i);
-                getRelations().setParent(getNodeOnNumber(numberNode),null);
-                return;
-            }
-
-
-        }
-    }*/
-
-
-    /*
-    private ArrayList<Hierarchy> relations;
-    private Map<Integer, Node> nodeMap; //с нуля
-    //private int quantity;
-
-
-    public void setHead(Node head){
-        this.head=head;
-    }
-    public Node getHead(){
-        return this.head;
-    }
-
-    public ArrayList<Hierarchy> getRelations() {
-        return relations;
-    }
-
-    public void setRelations(ArrayList relations) {
-        this.relations = relations;
-    }
-
-    public void setNodeMap(int number, Node node){
-        this.nodeMap.put(number,node);
-    }
-    public Map<Integer,Node> getNodeMap(){
-        return this.nodeMap;
-    }
-    public Node getNumOfObject(int num){/////////
-        return this.nodeMap.get(num);
-    }
-
-    public Tree(){
-        if (nodeMap ==null){
-            this.head = new Node();
-            this.nodeMap =new HashMap<>();
-            this.nodeMap.put(0,head);
-            this.relations=new ArrayList<>();
-            this.relations.add(0,new Hierarchy(this.head,null,null));
-        }else{
-            System.out.print("Error. Tree already exist");
-        }
-    }
-
-
-    public Tree(Node head, ArrayList<Node> children){
-        if (nodeMap ==null){
-            this.head=head;
-            this.relations=new ArrayList<>();
-            relations.add(0,new Hierarchy(this.head,null,children));
-            this.nodeMap =new HashMap<>();
-            this.nodeMap.put(0,this.head);
-
-            for (int i=0;i<children.size();i++){ //записываем детей в карту
-                this.relations.add(relations.size(),new Hierarchy(children.get(i),this.head,null));
-                this.nodeMap.put(nodeMap.size(),children.get(i));
-            }
-        }else{
-            System.out.print("Error. Tree already exist");
-        }
-    }
-
-    public Node getNodeOnNumber(int numberNode) {
-        Node tmp = null;
-        if (this.nodeMap.containsKey(numberNode) == true) {
-            tmp = getNodeMap().get(numberNode);
         } else {
-            System.out.print("Vertex is not exist! ");
+            Id id = new Id(heightParent, numberParent);
+            Set<Node> nodeSet = new HashSet<Node>();
+            nodeSet.add(node);
+            if(this.getNodeMap().containsValue(node)){
+
+                getNodeMap().remove(getIdOfNode(node));
+                //System.out.print("node parent= "+getRelations().getParent(node) + " node child = "+node);
+                this.getRelations().deleteChild(getRelations().getParent(node),node);
+            }
+            if (getNodeMap().containsKey(id) == true) {
+                if (getRelations().getChildren(getNodeMap().get(id)) == null) {
+                    getRelations().setChildren(getNodeOnNumber(heightParent, numberParent), new HashSet<Node>());
+                }
+                getRelations().setChildren(getNodeOnNumber(heightParent, numberParent), nodeSet);
+                getRelations().setParent(node, getNodeOnNumber(heightParent, numberParent));
+            }
+            setNodeMap(node);
+            int height = getIdOfNode(node).getHeight();
+            int number = getIdOfNode(node).getNumber();
+            if (getRelations().getChildren(node) != null) {
+                // Set<Node> newChildren = new HashSet<>();
+                Iterator<Node> iterator = getRelations().getChildren(node).iterator();
+                while (iterator.hasNext()) {
+                    child = iterator.next();
+                }
+                addNode(child, height, number);
+                setNodeMap(node);
+            }
         }
-        return tmp;
     }
 
-    public  void addNode(Node node,int parentNumber){
-        for (int i=parentNumber;i<getRelations().size();i++)
-            if (getRelations().get(parentNumber).getParent()!=getRelations().get(i).getParent()){
-            getRelations().add(i,new Hierarchy(node,getNodeOnNumber(parentNumber),
-                    ));
-            }
-
-        Node tmp=null;
-        tmp=getNodeOnNumber(key);
-        if (tmp!=null){ //если узел существует то добавляем
-            if(tmp.getChildren()==null){//если у него не было детей, то создаем список
-                ArrayList<Node> children = new ArrayList<Node>();
-                tmp.setChildList(children);
-
-            }
-            tmp.setChildren(node);//добавляем узел в список
-
-            this.getNodeMap().put(quantity,node);//заносим узел в карту
-            this.quantity++;//увеличиваем количество узлов
-
-           /* while(tmp.getChildren()!=null)//если это поддерево ,то добавляем его в карту
-            {
-                for (int i=0;i<tmp.getChildren().size();i++) {
-                    this.getNodeMap().put(quantity, tmp.getChildren().get(i));
-                    quantity++;
-                    tmp = tmp.getChildren().get(i);
+    public void split(int height,int number){
+        ArrayList<Node> children = new ArrayList<>();
+        int i=0;
+        if (getNodeMap().containsKey(new Id(height, number))){
+            Node parent = new Node();
+            parent = getRelations().getParent(getNodeOnNumber(height, number));
+            System.out.print(getIdOfNode(parent).getHeight()+"trt"+getIdOfNode(parent).getNumber());
+            if(getRelations().getChildren(getNodeOnNumber(height,number))!=null){
+                Iterator<Node> iterator = getRelations().getChildren(getNodeOnNumber(height, number)).iterator();
+                while (iterator.hasNext()){
+                    children.add(i,iterator.next());
                 }
+                for (int k=0;k<children.size();k++)
+                    addNode(children.get(k),getIdOfNode(parent).getHeight(),getIdOfNode(parent).getNumber());
+            }
+            deleteNode(height,number);
+
+        }else{
+            System.out.print("Error of id");
+        }
+    }
+
+    public Tree(Tree otherTree){
+        this.head=otherTree.getHead();
+        this.nodeMap=otherTree.getNodeMap();
+        this.relations=otherTree.getRelations();
+    }
+
+  /*  public void addTree(Tree newTree,int heightParent,int numberParent){
+        Node child = new Node();
+        Node node = newTree.getHead();
+        if ((heightParent < 1) | (numberParent < 1)) {
+            throw new IndexOutOfBoundsException("Error! Wrong index! Index must be >1 ");
+
+        } else {
+            Id id = new Id(heightParent, numberParent);
+            Set<Node> nodeSet = new HashSet<Node>();
+            nodeSet.add(node);
+
+            if (getNodeMap().containsKey(id) == true) {
+                if (getRelations().getChildren(getNodeMap().get(id)) == null) {
+                    getRelations().setChildren(getNodeOnNumber(heightParent, numberParent), new HashSet<Node>());
+                }
+                getRelations().setChildren(getNodeOnNumber(heightParent, numberParent), nodeSet);
+                getRelations().setParent(node, getNodeOnNumber(heightParent, numberParent));
+            }
+            setNodeMap(node);
+            int height = getIdOfNode(node).getHeight();
+            int number = getIdOfNode(node).getNumber();
+            if (getRelations().getChildren(node) != null) {
+                // Set<Node> newChildren = new HashSet<>();
+                Iterator<Node> iterator = getRelations().getChildren(node).iterator();
+                while (iterator.hasNext()) {
+                    child = iterator.next();
+                }
+                addNode(child, height, number);
+                setNodeMap(node);
             }*/
 
+            @Override
+            public String toString() {
 
+                return "Tree{" +
+                        "head=" + head +
+                        //", relations=" + relations +
 
+                        '}';
 
+            }
+        }

@@ -55,6 +55,20 @@ public class Hierarchy {
         }
     }
 
+    public void deleteChild(Node parent, Node node){
+
+
+        // children.remove(parent);
+        getChildren(parent).remove(node);
+
+    }
+
+    public  void deleteParent(Node node){
+
+        parent.remove(node);
+
+    }
+
     @Override
     public String toString() {
         return "Hierarchy{" +

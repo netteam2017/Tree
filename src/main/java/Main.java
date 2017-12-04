@@ -16,6 +16,7 @@ public class Main {
         Node node5=new Node(5);
         Node node6=new Node(6);
         Node node7=new Node(7);
+        Node node8=new Node(8);
 
         Hierarchy rel = new Hierarchy();
 
@@ -28,7 +29,7 @@ public class Main {
         children2.add(node5);
 
 
-         rel.setChildren(node1,children);
+        rel.setChildren(node1,children);
         rel.setParent(node3,node2);
         rel.setChildren(node2,children2);
 
@@ -37,16 +38,29 @@ public class Main {
         Tree tree1= new Tree(node1);
 
 
-      // System.out.print(tree1.getNodeMap().containsKey(new Id(1,1)));
+
+        // System.out.print(tree1.getNodeMap().containsKey(new Id(1,1)));
         tree1.addNode(node4,1,1);
         tree1.addNode(node3,1,1);
         tree1.addNode(node5,2,1);
         tree1.addNode(node6,3,1);
+        // tree1.addNode(node7,3,1);
+        //tree1.addNode(node7,3,1);
         //tree1.addNode(node7,3,1);
         tree1.addNode(node5,1,1);
-       // System.out.println(tree1.getIdOfNode(node5).getHeight());
-        tree1.addNode(node7,3,2);
-       System.out.println(tree1.getRelations());
+        tree1.addNode(node7,3,1);
+        tree1.addNode(node8,3,1);
+        // tree1.deleteNode(2,2);
+        //tree1.getRelations().deleteChild(node4,node5);
+        //tree1.deleteNode(2,3);
+
+        tree1.split(3,1);
+
+        Tree tree2 = new Tree(tree1);
+      //  tree1.addTree(tree2,1,1);
+        System.out.println(tree1.getRelations());
+//rel.deleteParent(node3);
+        //  System.out.println(tree1.getRelations().getChildren(node7).size());
 
 
 
