@@ -54,11 +54,12 @@ public class Main {
         //tree1.getRelations().deleteChild(node4,node5);
         //tree1.deleteNode(2,3);
 
-        tree1.split(3,1);
+       // tree1.split(3,1);
 
         Tree tree2 = new Tree(tree1);
       //  tree1.addTree(tree2,1,1);
-        System.out.println(tree1.getRelations());
+
+        System.out.println(tree1.createTree(new Id(2,3)).getNodeOnNumber(3,2));
 //rel.deleteParent(node3);
         //  System.out.println(tree1.getRelations().getChildren(node7).size());
 

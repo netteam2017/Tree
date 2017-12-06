@@ -222,6 +222,55 @@ public class Tree {
         this.relations=otherTree.getRelations();
     }
 
+    public Tree createTree(Id id){
+
+        Tree newTree= new Tree(getNodeOnNumber(id.getHeight(),id.getNumber()));
+        Node node = new Node();
+        node = getNodeOnNumber(id.getHeight(),id.getNumber());
+        ArrayList<Node> child = new ArrayList<>();
+        help(newTree,node,child);
+        return newTree;
+    }
+
+    public void help(Tree newTree,Node node,ArrayList<Node> child){
+        if (getRelations().getChildren(node).size()!=0){
+            int i=0;
+            Iterator<Node> iterator= getRelations().getChildren(node).iterator();
+            while (iterator.hasNext()){
+                child.add(i,iterator.next());
+                i++;
+            }
+            for (int k=0;k<child.size();k++){
+                System.out.print(getIdOfNode(node).getNumber());
+                newTree.addNode(child.get(k),newTree.getIdOfNode(node).getHeight(),newTree.getIdOfNode(node).getNumber());
+               if(getRelations().getChildren(child.get(k))!=null) help(newTree,child.get(k),new ArrayList<Node>());
+                //node=child.get(k);
+            }
+
+
+        }
+
+    }
+/*
+    public ArrayList<Id> helpAdd (Tree newTree,Node node, Id id){
+        ArrayList<Id> idChild= new ArrayList<>();
+        int i=0;
+        int h=1;
+        int n=1;
+        if (getRelations().getChildren(node)!=null) {
+            Iterator<Node> iterator = getRelations().getChildren(node).iterator();
+            while (iterator.hasNext()) {
+                idChild.add(i, getIdOfNode(iterator.next()));
+                i++;
+            }
+            System.out.print(idChild.size());
+            for (int k = 0; k < idChild.size(); k++) {
+                newTree.addNode(getNodeOnNumber(idChild.get(k).getHeight(), idChild.get(k).getNumber()), id.getHeight(), id.getNumber());
+                //node=getNodeOnNumber(idChild.get(k).getHeight(),idChild.get(k).getNumber());
+            }
+        }
+        return idChild;
+    }*/
   /*  public void addTree(Tree newTree,int heightParent,int numberParent){
         Node child = new Node();
         Node node = newTree.getHead();
