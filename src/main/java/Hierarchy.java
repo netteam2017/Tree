@@ -4,8 +4,8 @@ import java.util.*;
  * Created by user on 25.11.2017.
  */
 public class Hierarchy {
-    Map<Node,Set<Node>> children; //тут будет set;
-    Map<Node,Node> parent;
+   private Map<Node,Set<Node>> children; //тут будет set;
+   private Map<Node,Node> parent;
 
 
 

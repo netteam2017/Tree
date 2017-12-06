@@ -42,12 +42,12 @@ public class Main {
         // System.out.print(tree1.getNodeMap().containsKey(new Id(1,1)));
         tree1.addNode(node4,1,1);
         tree1.addNode(node3,1,1);
-        tree1.addNode(node5,2,1);
-        tree1.addNode(node6,3,1);
+        tree1.addNode(node5,1,1);
+        tree1.addNode(node6,2,3);
         // tree1.addNode(node7,3,1);
         //tree1.addNode(node7,3,1);
         //tree1.addNode(node7,3,1);
-        tree1.addNode(node5,1,1);
+       // tree1.addNode(node5,1,1);
         tree1.addNode(node7,3,1);
         tree1.addNode(node8,3,1);
         // tree1.deleteNode(2,2);
@@ -56,10 +56,14 @@ public class Main {
 
        // tree1.split(3,1);
 
-        Tree tree2 = new Tree(tree1);
+        Tree tree2 = new Tree(new Node(100));
       //  tree1.addTree(tree2,1,1);
 
-        System.out.println(tree1.createTree(new Id(2,3)).getNodeOnNumber(3,2));
+        tree2.addNode(new Node(33),1,1);
+           //     tree1.createTree(new Id(2,3));
+       // tree1.deleteNode(2,3);
+        tree1.addTree(tree2,new Id(1,1));
+        System.out.print(tree1.getRelations());
 //rel.deleteParent(node3);
         //  System.out.println(tree1.getRelations().getChildren(node7).size());
 

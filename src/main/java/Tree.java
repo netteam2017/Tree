@@ -16,10 +16,8 @@ public class Tree {
             this.nodeMap = new HashMap<>();
             relations.setRelHead(this.head);
             relations.setChildren(this.head,null);
-
-
             this.nodeMap.put(new Id(1, 1), head);
-            //this.relations.add(0,new Hierarchy(this.head,null,null));
+
         } else {
             System.out.print("Error. Tree already exist");
         }
@@ -64,20 +62,7 @@ public class Tree {
             Id id = new Id(getIdOfNode(getRelations().getParent(node)).getHeight() + 1, getRelations().getChildren(getRelations().getParent(node)).size());
             nodeMap.put(id, node);
         }
-       /* while (getRelations().getChildren(tmp) != null) {
 
-            Iterator<Node> itr = getRelations().getChildren(tmp).iterator();
-            while (itr.hasNext()) {
-
-
-                nodeMap.put(new Id(getIdOfNode(tmp).getHeight() + 1, getQuantityNumbers(getIdOfNode(tmp).getHeight() + 1)), itr.next());
-                if (itr.hasNext())
-
-                    tmp = itr.next();
-                System.out.print(tmp);
-            }
-
-        }*/
     }
 
 
@@ -101,7 +86,6 @@ public class Tree {
             tmp = getNodeMap().get(id);
         } else {
             throw new IndexOutOfBoundsException(("Vertex is not exist! "));
-            //  System.out.print("Vertex is not exist! ");
         }
         return tmp;
     }
@@ -132,9 +116,6 @@ public class Tree {
                 while (iterator.hasNext()) {
                     newnode.add(i,iterator.next());
                     i++;
-
-
-//                    System.out.print("del " + getIdOfNode(newnode.get(i)).getHeight() + getIdOfNode(newnode.get(i)).getNumber());
                 }
                 for (int k=0;k<newnode.size();k++)
                     deleteNode(getIdOfNode(newnode.get(k)).getHeight(), getIdOfNode(newnode.get(k)).getNumber());
@@ -166,12 +147,14 @@ public class Tree {
             Id id = new Id(heightParent, numberParent);
             Set<Node> nodeSet = new HashSet<Node>();
             nodeSet.add(node);
-            if(this.getNodeMap().containsValue(node)){
+          /*
+          блок нужен для того чтобы перенести существующие узлы  на др узел в этом же дереве
+          if(this.getNodeMap().containsValue(node)){
 
                 getNodeMap().remove(getIdOfNode(node));
                 //System.out.print("node parent= "+getRelations().getParent(node) + " node child = "+node);
                 this.getRelations().deleteChild(getRelations().getParent(node),node);
-            }
+            }*/
             if (getNodeMap().containsKey(id) == true) {
                 if (getRelations().getChildren(getNodeMap().get(id)) == null) {
                     getRelations().setChildren(getNodeOnNumber(heightParent, numberParent), new HashSet<Node>());
@@ -183,7 +166,6 @@ public class Tree {
             int height = getIdOfNode(node).getHeight();
             int number = getIdOfNode(node).getNumber();
             if (getRelations().getChildren(node) != null) {
-                // Set<Node> newChildren = new HashSet<>();
                 Iterator<Node> iterator = getRelations().getChildren(node).iterator();
                 while (iterator.hasNext()) {
                     child = iterator.next();
@@ -226,82 +208,51 @@ public class Tree {
 
         Tree newTree= new Tree(getNodeOnNumber(id.getHeight(),id.getNumber()));
         Node node = new Node();
-        node = getNodeOnNumber(id.getHeight(),id.getNumber());
+        node = getNodeOnNumber(id.getHeight(),id.getNumber());System.out.print(newTree.getRelations());
         ArrayList<Node> child = new ArrayList<>();
         help(newTree,node,child);
         return newTree;
     }
 
     public void help(Tree newTree,Node node,ArrayList<Node> child){
-        if (getRelations().getChildren(node).size()!=0){
-            int i=0;
-            Iterator<Node> iterator= getRelations().getChildren(node).iterator();
-            while (iterator.hasNext()){
-                child.add(i,iterator.next());
+        if(getRelations().getChildren(node)!=null){
+        if (getRelations().getChildren(node).size()!=0) {
+            int i = 0;
+            Iterator<Node> iterator = getRelations().getChildren(node).iterator();
+            while (iterator.hasNext()) {
+                child.add(i, iterator.next());
                 i++;
             }
-            for (int k=0;k<child.size();k++){
-                System.out.print(getIdOfNode(node).getNumber());
-                newTree.addNode(child.get(k),newTree.getIdOfNode(node).getHeight(),newTree.getIdOfNode(node).getNumber());
-               if(getRelations().getChildren(child.get(k))!=null) help(newTree,child.get(k),new ArrayList<Node>());
-                //node=child.get(k);
+            for (int k = 0; k < child.size(); k++) {
+                newTree.addNode(child.get(k), newTree.getIdOfNode(node).getHeight(), newTree.getIdOfNode(node).getNumber());
+                if (getRelations().getChildren(child.get(k)) != null)
+                    help(newTree, child.get(k), new ArrayList<Node>());
             }
+        }
 
 
         }
 
     }
-/*
-    public ArrayList<Id> helpAdd (Tree newTree,Node node, Id id){
-        ArrayList<Id> idChild= new ArrayList<>();
-        int i=0;
-        int h=1;
-        int n=1;
-        if (getRelations().getChildren(node)!=null) {
-            Iterator<Node> iterator = getRelations().getChildren(node).iterator();
-            while (iterator.hasNext()) {
-                idChild.add(i, getIdOfNode(iterator.next()));
-                i++;
-            }
-            System.out.print(idChild.size());
-            for (int k = 0; k < idChild.size(); k++) {
-                newTree.addNode(getNodeOnNumber(idChild.get(k).getHeight(), idChild.get(k).getNumber()), id.getHeight(), id.getNumber());
-                //node=getNodeOnNumber(idChild.get(k).getHeight(),idChild.get(k).getNumber());
-            }
-        }
-        return idChild;
-    }*/
-  /*  public void addTree(Tree newTree,int heightParent,int numberParent){
+
+    public void addTree(Tree newTree,Id idParent){
+        Node node = new Node();
+        node = newTree.getHead();
         Node child = new Node();
-        Node node = newTree.getHead();
-        if ((heightParent < 1) | (numberParent < 1)) {
-            throw new IndexOutOfBoundsException("Error! Wrong index! Index must be >1 ");
-
-        } else {
-            Id id = new Id(heightParent, numberParent);
-            Set<Node> nodeSet = new HashSet<Node>();
-            nodeSet.add(node);
-
-            if (getNodeMap().containsKey(id) == true) {
-                if (getRelations().getChildren(getNodeMap().get(id)) == null) {
-                    getRelations().setChildren(getNodeOnNumber(heightParent, numberParent), new HashSet<Node>());
-                }
-                getRelations().setChildren(getNodeOnNumber(heightParent, numberParent), nodeSet);
-                getRelations().setParent(node, getNodeOnNumber(heightParent, numberParent));
-            }
-            setNodeMap(node);
-            int height = getIdOfNode(node).getHeight();
-            int number = getIdOfNode(node).getNumber();
-            if (getRelations().getChildren(node) != null) {
-                // Set<Node> newChildren = new HashSet<>();
-                Iterator<Node> iterator = getRelations().getChildren(node).iterator();
+        addNode(node,idParent.getHeight(),idParent.getNumber());
+        if (newTree.getRelations().getChildren(node)!=null) {
+            if (newTree.getRelations().getChildren(node).size() != 0) {
+                Iterator<Node> iterator = newTree.getRelations().getChildren(node).iterator();
                 while (iterator.hasNext()) {
                     child = iterator.next();
-                }
-                addNode(child, height, number);
-                setNodeMap(node);
-            }*/
+                    newTree = newTree.createTree(newTree.getIdOfNode(child));
 
+                    addTree(newTree, getIdOfNode(node));
+                }
+            }
+
+        }
+    }
             @Override
             public String toString() {
 
