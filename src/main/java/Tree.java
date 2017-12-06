@@ -85,7 +85,7 @@ public class Tree {
         if (this.nodeMap.containsKey(id) == true) {
             tmp = getNodeMap().get(id);
         } else {
-            throw new IndexOutOfBoundsException(("Vertex is not exist! "));
+            System.out.print("Vertex is not exist! ");
         }
         return tmp;
     }
@@ -103,34 +103,36 @@ public class Tree {
     }
 
     public void deleteNode(int height,int number) {
-        ArrayList<Node> newnode= new ArrayList<>();
-        int i=0;
-        if ((height < 1) | (number < 1)) {
-            throw new IndexOutOfBoundsException("Error! Wrong index! Index must be >1 ");
-        } else {
+        if (getNodeOnNumber(height, number)!=null) {
+            ArrayList<Node> newnode = new ArrayList<>();
+            int i = 0;
+            if ((height < 1) | (number < 1)) {
+                throw new IndexOutOfBoundsException("Error! Wrong index! Index must be >1 ");
+            } else {
 
 
-            if (getRelations().getChildren(getNodeOnNumber(height, number))!=null) {
-                Iterator<Node> iterator = getRelations().getChildren(getNodeOnNumber(height, number)).iterator();
+                if (getRelations().getChildren(getNodeOnNumber(height, number)) != null) {
+                    Iterator<Node> iterator = getRelations().getChildren(getNodeOnNumber(height, number)).iterator();
 
-                while (iterator.hasNext()) {
-                    newnode.add(i,iterator.next());
-                    i++;
+                    while (iterator.hasNext()) {
+                        newnode.add(i, iterator.next());
+                        i++;
+                    }
+                    for (int k = 0; k < newnode.size(); k++)
+                        deleteNode(getIdOfNode(newnode.get(k)).getHeight(), getIdOfNode(newnode.get(k)).getNumber());
+
+                    getRelations().deleteChild(getRelations().getParent(getNodeOnNumber(height, number)), getNodeOnNumber(height, number));
+                    getRelations().deleteParent(getNodeOnNumber(height, number));
+                    getNodeMap().remove(new Id(height, number));
+
+                } else {
+
+                    getRelations().deleteChild(getRelations().getParent(getNodeOnNumber(height, number)), getNodeOnNumber(height, number));
+                    getRelations().deleteParent(getNodeOnNumber(height, number));
+                    getNodeMap().remove(new Id(height, number));
+
+
                 }
-                for (int k=0;k<newnode.size();k++)
-                    deleteNode(getIdOfNode(newnode.get(k)).getHeight(), getIdOfNode(newnode.get(k)).getNumber());
-
-                getRelations().deleteChild(getRelations().getParent(getNodeOnNumber(height, number)), getNodeOnNumber(height, number));
-                getRelations().deleteParent(getNodeOnNumber(height, number));
-                getNodeMap().remove(new Id(height,number));
-
-            }else{
-                System.out.print("tyt ");
-                getRelations().deleteChild(getRelations().getParent(getNodeOnNumber(height, number)), getNodeOnNumber(height, number));
-                getRelations().deleteParent(getNodeOnNumber(height, number));
-                getNodeMap().remove(new Id(height,number));
-
-
             }
         }
     }
@@ -140,6 +142,7 @@ public class Tree {
 
     public void addNode(Node node,int heightParent, int numberParent) { //good
         Node child = new Node();
+        if(getNodeOnNumber(heightParent,numberParent)!=null)
         if ((heightParent < 1) | (numberParent < 1)) {
             throw new IndexOutOfBoundsException("Error! Wrong index! Index must be >1 ");
 

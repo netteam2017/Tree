@@ -56,14 +56,16 @@ public class Main {
 
        // tree1.split(3,1);
 
-        Tree tree2 = new Tree(new Node(100));
+       // Tree tree2 = new Tree(new Node(100));
       //  tree1.addTree(tree2,1,1);
 
-        tree2.addNode(new Node(33),1,1);
+      //  tree2.addNode(new Node(33),1,1);
            //     tree1.createTree(new Id(2,3));
        // tree1.deleteNode(2,3);
-        tree1.addTree(tree2,new Id(1,1));
-        System.out.print(tree1.getRelations());
+        //tree1.addTree(tree2,new Id(1,1));
+        tree1.deleteNode(1,1);
+       // System.out.print(tree1.getNodeOnNumber(1,1));
+        tree1.addNode(new Node(), 1,1);
 //rel.deleteParent(node3);
         //  System.out.println(tree1.getRelations().getChildren(node7).size());
 

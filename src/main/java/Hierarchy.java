@@ -55,11 +55,15 @@ public class Hierarchy {
         }
     }
 
-    public void deleteChild(Node parent, Node node){
+    public void deleteChild(Node parent, Node node){//если что то проблема тут по удалению(нужно убрать if)
 
 
-        // children.remove(parent);
-        getChildren(parent).remove(node);
+        if(parent!=null) {
+            // children.remove(parent);
+            getChildren(parent).remove(node);
+        }else{
+            deleteParent(node);
+        }
 
     }
 
