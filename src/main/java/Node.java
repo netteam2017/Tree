@@ -5,16 +5,19 @@ import java.util.ArrayList;
  */
 public class Node {
 
+    final private Id id;
     final private int data;
     static final int BASIC_DATA=1;
 
 
 
 
-    public Node(){
+    public Node(Id id){
+        this.id=id;
         this.data=BASIC_DATA;
     }
-    public Node(int data){
+    public Node(int data,Id id){
+        this.id=id;
         this.data = data;
     }
 
@@ -25,13 +28,17 @@ public class Node {
 
         Node node = (Node) o;
 
-        return data == node.data;
+        return id != null ? id.equals(node.id) : node.id == null;
 
     }
 
     @Override
     public int hashCode() {
-        return data;
+        return id != null ? id.hashCode() : 0;
+    }
+
+    public Id getId(){
+        return this.id;
     }
 
     public int getData(){
@@ -39,12 +46,11 @@ public class Node {
     };
 
 
-
-
     @Override
     public String toString() {
         return "Node{" +
-                " data=" + data +
+                "id=" + id +
+                ", data=" + data +
                 '}';
     }
 }

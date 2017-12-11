@@ -32,16 +32,16 @@ public class Hierarchy {
             childrenList.add(node);
             this.children.put(parent,childrenList);
         }else{
-            this.children.get(parent).add(node); //родителю надо передать список а списка с детьми в явном виде нет
+            this.children.get(parent).add(node);
         }
     }
 
     public Set<Node> getChildren(Node node) {
-        return this.children.get(node);
+        return new HashSet<>(this.children.get(node));
     }
 
 
-    public void setChildren(Node parent, Set<Node> children) {
+    public void addChildren(Node parent, Set<Node> children) {
         if(this.children.get(parent)!=null) {
             this.children.get(parent).addAll(children);
         }else{
@@ -60,7 +60,8 @@ public class Hierarchy {
 
         if(parent!=null) {
             // children.remove(parent);
-            getChildren(parent).remove(node);
+            this.children.get(parent).remove(node);
+            //getChildren(parent).remove(node);
         }else{
             deleteParent(node);
         }

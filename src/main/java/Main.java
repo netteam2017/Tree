@@ -1,4 +1,3 @@
-import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -6,11 +5,20 @@ import java.util.Set;
  * Created by user on 15.11.2017.
  */
 public class Main {
-    public static void main(String[] args){
+    public static void main(String[] args) {
 
-        Node nodeTest = new Node();
-        Node node1 = new Node(1);
-        Node node2 = new Node(2);
+        //  Node nodeTest = new Node();
+        Node node1 = new Node(1, new Id(1, 1));
+        Node node2 = new Node(2,new Id(1,1));
+
+        Tree tree = new Tree(node1);
+        tree.addNode(node2,new Id(1,1));
+        System.out.print(tree.getNode(new Id(2,1)));
+
+    }
+}
+
+       /* Node node2 = new Node(2);
         Node node3=new Node (3);
         Node node4=new Node(4);
         Node node5=new Node(5);
@@ -29,9 +37,9 @@ public class Main {
         children2.add(node5);
 
 
-        rel.setChildren(node1,children);
+        rel.addChildren(node1,children);
         rel.setParent(node3,node2);
-        rel.setChildren(node2,children2);
+        rel.addChildren(node2,children2);
 
 
 
@@ -51,7 +59,7 @@ public class Main {
         tree1.addNode(node7,3,1);
         tree1.addNode(node8,3,1);
         // tree1.deleteNode(2,2);
-        //tree1.getRelations().deleteChild(node4,node5);
+        //tree1.getHierarchy().deleteChild(node4,node5);
         //tree1.deleteNode(2,3);
 
        // tree1.split(3,1);
@@ -64,14 +72,14 @@ public class Main {
        // tree1.deleteNode(2,3);
         //tree1.addTree(tree2,new Id(1,1));
         tree1.deleteNode(1,1);
-       // System.out.print(tree1.getNodeOnNumber(1,1));
+       // System.out.print(tree1.getNode(1,1));
         tree1.addNode(new Node(), 1,1);
 //rel.deleteParent(node3);
-        //  System.out.println(tree1.getRelations().getChildren(node7).size());
+        //  System.out.println(tree1.getHierarchy().getChildren(node7).size());
 
 
 
 
     }
 
-}
+}*/
