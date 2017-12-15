@@ -1,6 +1,3 @@
-import java.util.HashSet;
-import java.util.Set;
-
 /**
  * Created by user on 15.11.2017.
  */
@@ -10,10 +7,33 @@ public class Main {
         //  Node nodeTest = new Node();
         Node node1 = new Node(1, new Id(1, 1));
         Node node2 = new Node(2,new Id(1,1));
+        Node node3 = new Node(3, new Id(1, 1));
+        Node node4 = new Node(4, new Id(1, 1));
+        Node node5 = new Node(5, new Id(1, 1));
 
-        Tree tree = new Tree(node1);
+        Tree tree = new Tree(node1.getData());
+
+        //  Node node11 = new Node(10,new Id(1,1));
+
         tree.addNode(node2,new Id(1,1));
-        System.out.print(tree.getNode(new Id(2,1)));
+        //System.out.println(tree.getNode(new Id(2,1)));
+
+        tree.addNode(node3, new Id(1, 1));// System.out.print(tree.getHierarchy().getChildren(node1));
+        //tree.deleteNode(tree.getNode(new Id(2,2)));
+        tree.addNode(new Node(4, new Id(1, 1)), new Id(2, 1));
+        tree.addNode(new Node(5, new Id(1, 1)), new Id(2, 1));
+
+        // Tree tree2 = new Tree(node11);
+        //tree2.addNode(node4,new Id(1,1));
+        //tree2.addNode(node5,new Id(1,1));
+        //tree2.addNode(new Node(6,new Id(1,1)),new Id(2,1));
+        System.out.println("____________________________");
+        Tree tree2 = tree.createTree(new Id(2, 1));
+        //  tree.split(new Id(2,1));
+
+        //tree.addTree(tree2,new Id(2,2));
+        System.out.println(tree2.getHierarchy());
+
 
     }
 }

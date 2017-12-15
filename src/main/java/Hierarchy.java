@@ -1,4 +1,7 @@
-import java.util.*;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Map;
+import java.util.Set;
 
 /**
  * Created by user on 25.11.2017.
@@ -26,6 +29,7 @@ public class Hierarchy {
 
     public void setParent(Node node,Node parent) {//нужно удалить ребенка от родителя первого
         this.getChildren(getParent(node)).remove(node);
+        System.out.print(node);
         this.parent.put(node,parent);
         if(this.children.get(parent)==null) {
             Set<Node> childrenList = new HashSet<>();
@@ -37,7 +41,12 @@ public class Hierarchy {
     }
 
     public Set<Node> getChildren(Node node) {
-        return new HashSet<>(this.children.get(node));
+        //  System.out.print(this.children.get(node));
+        Set<Node> newChildren = new HashSet<>();
+        if (this.children.get(node) != null) {
+            newChildren.addAll(this.children.get(node));
+        }
+        return newChildren;
     }
 
 
@@ -45,12 +54,16 @@ public class Hierarchy {
         if(this.children.get(parent)!=null) {
             this.children.get(parent).addAll(children);
         }else{
+
             this.children.put(parent,children);
+            //  System.out.print(children);
         }
 
         if (children!=null){
             for(int i=0;i<children.size();i++){
+
                 this.parent.put(children.toArray(new Node[children.size()])[i],parent);
+
             }
         }
     }
@@ -61,6 +74,7 @@ public class Hierarchy {
         if(parent!=null) {
             // children.remove(parent);
             this.children.get(parent).remove(node);
+
             //getChildren(parent).remove(node);
         }else{
             deleteParent(node);
@@ -70,6 +84,7 @@ public class Hierarchy {
 
     public  void deleteParent(Node node){
 
+        this.children.get(getParent(node)).remove(node);
         parent.remove(node);
 
     }

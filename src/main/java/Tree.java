@@ -9,9 +9,9 @@ public class Tree {
     private Hierarchy hierarchy;
     private Map<Id, Node> nodeMap;
 
-    public Tree(Node node) {
+    public Tree(int data) {
         if (nodeMap == null) {
-            this.head = node;
+            this.head = new Node(data, new Id(1, 1));
             this.hierarchy = new Hierarchy();
             this.nodeMap = new HashMap<>();
             hierarchy.setRelHead(this.head);
@@ -38,10 +38,11 @@ public class Tree {
 
     public Node getNode(Id id) {
         Node tmp = null;
+
         if (this.nodeMap.containsKey(id) == true) {
             tmp = getNodeMap().get(id);
         } else {
-            System.out.print("Vertex is not exist! ");
+            System.out.print("Vertex is not exist! " + id);
         }
         return tmp;
     }
@@ -69,7 +70,9 @@ public class Tree {
 
     public Id getNewNodeId(Node parent){
         int height=parent.getId().getHeight();
-        System.out.println(height);
+        //System.out.println(height);
+
+//System.out.println("children"+getQuantityNumbers(height+1));
         Id newId = new Id(height+1,getQuantityNumbers(height+1)+1);
         return newId;
     }
@@ -85,7 +88,7 @@ public class Tree {
         return quantity;
     }
     public void rememberNodeMap(Node node) {
-        //Node tmp = node;
+
         Id id;
         if (nodeMap == null) {
              id = new Id(1, 1);
@@ -98,104 +101,80 @@ public class Tree {
     }
 
 
-
-
-
-    public void deleteNode(Id id) {
-        if (getNode(id) == null) {
+    public void deleteNode(Node node) {
+        if (getNodeMap().containsValue(node) == false) {
             return;
         }
-        ArrayList<Node> newnode = new ArrayList<>();
-        int i = 0;
-
-        if (getHierarchy().getChildren(getNode(id)) != null) {
-            Iterator<Node> iterator = getHierarchy().getChildren(getNode(id)).iterator();
-
-            while (iterator.hasNext()) {
-                newnode.add(i, iterator.next());
-                i++;
-            }
-            for (int k = 0; k < newnode.size(); k++)
-                deleteNode(getIdOfNode(newnode.get(k)));
-
-            getHierarchy().deleteChild(getHierarchy().getParent(getNode(id)), getNode(id));
-            getHierarchy().deleteParent(getNode(id));
-            getNodeMap().remove(id);
-
-        } else {//переделать склеить
-
-            getHierarchy().deleteChild(getHierarchy().getParent(getNode(id)), getNode(id));
-            getHierarchy().deleteParent(getNode(id));
-            getNodeMap().remove(id);
-
-
+        ArrayList<Node> newnode = new ArrayList<>(getHierarchy().getChildren(node));
+        for (Node ch : newnode) {
+            if (ch != null)
+                deleteNode(ch);
         }
-
-
+        getHierarchy().deleteChild(getHierarchy().getParent(node), node);
+        getNodeMap().remove(node.getId());
     }
 
 
-    public void addNode(Node node, Id id) { //good
+    public Node addNode(Node node, Id id) { //good
+        if (getNode(id) == null) {
+            throw new RuntimeException("Parent is not exist!");
+        }
+
+
+        Node tmp = new Node(node.getData(), this.getNewNodeId(getNode(id)));
+
+        // System.out.println("rere!"+getNewNodeId(this.getNode(id)).getHeight());
+        Node child = new Node(new Id(1, 1));
+
+        rememberNodeMap(tmp);
+
+
+        Set<Node> nodeSet = new HashSet<Node>();
+        nodeSet.add(tmp);
+
+        getHierarchy().addChildren(getNode(id), nodeSet);
+
+        return tmp;
+    }
+
+    public void addNodeForSplit(Node node, Id id) { //good
         if (getNode(id) == null) {
             return;
         }
-        Node tmp = new Node(node.getData(),getNewNodeId(getNode(id)));
+
+
+        Node tmp = new Node(node.getData(), this.getNewNodeId(getNode(id)));///давай избавимся от этой процедуры?!?!?!?
+
+        System.out.println("rere!" + getNewNodeId(this.getNode(id)).getNumber());
         Node child = new Node(new Id(1,1));
 
         rememberNodeMap(tmp);
 
+
         Set<Node> nodeSet = new HashSet<Node>();
-        nodeSet.add(getNodeMap().get(getNewNodeId(getNode(id))));
-
-         // блок нужен для того чтобы перенести существующие узлы  на др узел в этом же дереве
-        /*if(this.getNodeMap().containsValue(node)){
-            getNodeMap().remove(getIdOfNode(node));
-                //System.out.print("node parent= "+getHierarchy().getParent(node) + " node child = "+node);
+        nodeSet.add(tmp);
+        if (this.getNodeMap().containsValue(node)) {
+            getNodeMap().remove(tmp.getId());
+            //System.out.print("node parent= "+getRelations().getParent(node) + " node child = "+node);
             this.getHierarchy().deleteChild(getHierarchy().getParent(node),node);
-        }*/
-
-       /* if (getHierarchy().getChildren(getNodeMap().get(id)) == null) {
-             getHierarchy().addChildren(getNode(id), new HashSet<Node>());
-         }//перенести это в addchildren*/
+        }
 
         getHierarchy().addChildren(getNode(id), nodeSet);
-       // getHierarchy().setParent(node, getNode(id));
+    }
 
-        Id childId = tmp.getId();//надо изменить node
+    public void split(Id id) {
+        ArrayList<Node> children = new ArrayList<>(getHierarchy().getChildren(getNode(id)));
 
-        ArrayList<Node> children = new ArrayList<>(getHierarchy().getChildren(node));
-       // if(getHierarchy().getChildren(node)!=null) {
-            /*Iterator<Node> iterator = getHierarchy().getChildren(node).iterator();
-            while (iterator.hasNext()) {
-                child = iterator.next();
-            }
-            System.out.print("kikik");*/
-            for (Node ch:children) {
-                if (ch!=null)
-                addNode(ch, childId);
-            }
-
-           // rememberNodeMap(node);
-
-
-    }/*
-
-    public void split(int height, int number) {
-        ArrayList<Node> children = new ArrayList<>();
-        int i = 0;
-        if (getNodeMap().containsKey(new Id(height, number))) {
-            Node parent = new Node();
-            parent = getHierarchy().getParent(getNode(height, number));
+        if (getNodeMap().containsKey(id)) {
+            Node parent = getHierarchy().getParent(getNode(id));
            // System.out.print(getIdOfNode(parent).getHeight() + "trt" + getIdOfNode(parent).getNumber());
-            if (getHierarchy().getChildren(getNode(height, number)) != null) {
-                Iterator<Node> iterator = getHierarchy().getChildren(getNode(height, number)).iterator();
-                while (iterator.hasNext()) {
-                    children.add(i, iterator.next());
+            if (getHierarchy().getChildren(getNode(id)) != null) {
+                for (Node ch : children) {
+                    System.out.println(getIdOfNode(parent).getHeight());
+                    addNodeForSplit(ch, getIdOfNode(parent));
                 }
-                for (int k = 0; k < children.size(); k++)
-                    addNode(children.get(k), getIdOfNode(parent).getHeight(), getIdOfNode(parent).getNumber());
             }
-            deleteNode(height, number);
+            deleteNode(getNode(id));
 
         } else {
             System.out.print("Error of id");
@@ -208,31 +187,35 @@ public class Tree {
         this.hierarchy = otherTree.getHierarchy();
     }
 
-    public Tree createTree(Id id) {
+    public Tree createTree(Id id) {//голову считает по старому ид при генерации нового ид почему?
 
-        Tree newTree = new Tree(getNode(id.getHeight(), id.getNumber()));
-        Node node = new Node();
-        node = getNode(id.getHeight(), id.getNumber());
-        //System.out.print(newTree.getHierarchy());
+        Tree newTree = new Tree(getNode(id).getData());
+        Node node = getNode(id);
+        // System.out.print(id.getHeight());
         ArrayList<Node> child = new ArrayList<>();
-        collect(newTree, node, child);
+        collect(newTree, newTree.getHead(), node);
         return newTree;
     }
 
-    public void collect(Tree newTree, Node node, ArrayList<Node> child) {
-        if (getHierarchy().getChildren(node) != null) {
-            if (getHierarchy().getChildren(node).size() != 0) {
-                int i = 0;
-                Iterator<Node> iterator = getHierarchy().getChildren(node).iterator();
-                while (iterator.hasNext()) {
-                    child.add(i, iterator.next());
-                    i++;
+    public void collect(Tree newTree, Node newnode, Node node) {
+        ArrayList<Node> children = new ArrayList<>(getHierarchy().getChildren(node));
+        if (children != null) {
+            if (children.size() != 0) {
+
+                for (Node ch : children) {
+                    System.out.println("Idnew " + newTree.getIdOfNode(node).getHeight());
+                    Node newNode = newTree.addNode(ch, newnode.getId());
+                    if (getHierarchy().getChildren(ch) != null)
+                        collect(newTree, newNode, ch);
+                    // child.add(i, ch);
+                    //i++;
                 }
-                for (int k = 0; k < child.size(); k++) {
-                    newTree.addNode(child.get(k), newTree.getIdOfNode(node).getHeight(), newTree.getIdOfNode(node).getNumber());
-                    if (getHierarchy().getChildren(child.get(k)) != null)
-                        collect(newTree, child.get(k), new ArrayList<Node>());
-                }
+                /*for (Node ch:child) {
+                   // System.out.print("Idnew "+newTree.getIdOfNode(node).getHeight());
+                    newTree.addNode(ch, newTree.getIdOfNode(node));
+                    if (getHierarchy().getChildren(ch) != null)
+                        collect(newTree, ch, new ArrayList<Node>());
+                }*/
             }
 
 
@@ -241,42 +224,34 @@ public class Tree {
     }
 
     public void addTree(Tree newTree, Id idParent) {
-        Node node = new Node();
-        node = newTree.getHead();
-        Node child = new Node();
-        addNode(node,idParent.getHeight(),idParent.getNumber());
-        if (newTree.getHierarchy().getChildren(node) != null) {
-            if (newTree.getHierarchy().getChildren(node).size() != 0) {
-                Iterator<Node> iterator = newTree.getHierarchy().getChildren(node).iterator();
-                while (iterator.hasNext()) {
-                    child = iterator.next();
-                   // newTree = newTree.createTree(newTree.getIdOfNode(child));
-                    addNode(child, idParent.getHeight(), idParent.getNumber());
-                   // addTree(newTree, getIdOfNode(node));
+
+        Node node = newTree.getHead();
+        // Node child = new Node();
+        addNode(node, idParent);
+        ArrayList<Node> children = new ArrayList<>(newTree.getHierarchy().getChildren(node));
+        if (children != null) {
+            if (children.size() != 0) {
+                for (Node child : children) {
+                    //  addTreeInternal(newTree,idParent,);
+                    // addNode(child, idParent);
                 }
             }
-
         }
+
     }
 
-    public void addTreeInternal(Tree newTree,Id idParentSource,Id idParentTarget){
-        Node node = new Node();
-        node = getNode(idParentSource.getHeight(),idParentTarget.getNumber());
-        Node child = new Node();
 
-        if (newTree.getHierarchy().getChildren(node) != null) {
-            if (newTree.getHierarchy().getChildren(node).size() != 0) {
-                Iterator<Node> iterator = newTree.getHierarchy().getChildren(node).iterator();
-                while (iterator.hasNext()) {
-                    child = iterator.next();
-                    // newTree = newTree.createTree(newTree.getIdOfNode(child));
-                    addNode(child, idParent.getHeight(), idParent.getNumber());//target!!
-                    // addTree(newTree, getIdOfNode(node));
+    public void addTreeInternal(Tree newTree,Id idParentSource,Id idParentTarget){
+        Node node = getNode(new Id(idParentSource.getHeight(), idParentTarget.getNumber()));
+        ArrayList<Node> children = new ArrayList<>(newTree.getHierarchy().getChildren(node));
+        if (children != null) {
+            if (children.size() != 0) {
+                for (Node child : children) {
+                    addNode(child, idParentTarget);
+
                 }
             }
-
         }
-
     }
 
     @Override
@@ -288,5 +263,5 @@ public class Tree {
 
                 '}';
 
-    }*/
+    }
 }
