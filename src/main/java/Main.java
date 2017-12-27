@@ -35,8 +35,8 @@ public class Main {
 
         // tree.addTree(tree2,new Id(3,1));
 
-        //tree.addTree(tree2,new Id(2,2));
-        System.out.println(tree.getNodeMap());
+        tree.addTree(tree2, new Id(2, 2));
+        System.out.println(tree.getNode(new Id(4, 2)));
 
 
     }

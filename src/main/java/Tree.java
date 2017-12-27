@@ -104,20 +104,21 @@ public class Tree {
     public void deleteNode(Node node) {
         if (getNodeMap().containsValue(node) == false) {
             return;
+        } else {
+            ArrayList<Node> newnode = new ArrayList<>(getHierarchy().getChildren(node));
+            for (Node ch : newnode) {
+                if (ch != null)
+                    deleteNode(ch);
+            }
+            getHierarchy().deleteChild(getHierarchy().getParent(node), node);
+            getNodeMap().remove(node.getId());
         }
-        ArrayList<Node> newnode = new ArrayList<>(getHierarchy().getChildren(node));
-        for (Node ch : newnode) {
-            if (ch != null)
-                deleteNode(ch);
-        }
-        getHierarchy().deleteChild(getHierarchy().getParent(node), node);
-        getNodeMap().remove(node.getId());
     }
-
 
     public Node addNode(Node node, Id id) { //good
         if (getNode(id) == null) {
-            throw new RuntimeException("Parent is not exist!");
+            //System.out.println("Parent is not exist!");
+            return null;
         }
 
 
@@ -231,13 +232,17 @@ public class Tree {
     public void addTree(Tree newTree, Id idParent) {
 
         Node node = newTree.getHead();
+        System.out.println("head = " + node);
         // Node child = new Node();
-        addNode(node, idParent);
+        // addNode(node, idParent);
+        Node tmp;
+        tmp = addNode(node, idParent);
+        System.out.println("tmp = " + tmp);
         ArrayList<Node> children = new ArrayList<>(newTree.getHierarchy().getChildren(node));
         if (children != null) {
             if (children.size() != 0) {
                 for (Node child : children) {
-                    //  addTreeInternal(newTree,idParent,);
+                    addTreeInternal(newTree, node.getId(), tmp.getId());
                     // addNode(child, idParent);
                 }
             }
@@ -247,12 +252,16 @@ public class Tree {
 
 
     public void addTreeInternal(Tree newTree, Id idParentSource, Id idParentTarget) { //source -из текущего target - куда в новом дереве.
-        Node node = getNode(new Id(idParentSource.getHeight(), idParentTarget.getNumber()));
+        Node node = getNode(new Id(idParentSource.getHeight(), idParentSource.getNumber()));
+        System.out.println("node = " + node);
+        System.out.println("target = " + idParentTarget);
         ArrayList<Node> children = new ArrayList<>(newTree.getHierarchy().getChildren(node));
         if (children != null) {
             if (children.size() != 0) {
                 for (Node child : children) {
-                    addNode(child, idParentTarget);
+                    Node tmp = addNode(child, idParentTarget);
+
+                    addTreeInternal(newTree, child.getId(), tmp.getId());
 
                 }
             }
