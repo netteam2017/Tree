@@ -72,16 +72,18 @@ public class Tree {
         int height=parent.getId().getHeight();
         //System.out.println(height);
 
-//System.out.println("children"+getQuantityNumbers(height+1));
         Id newId = new Id(height+1,getQuantityNumbers(height+1)+1);
         return newId;
     }
     public int getQuantityNumbers(int height) {
         int quantity = 0;
+
         Set<Map.Entry<Id, Node>> entrySet = getNodeMap().entrySet();
         for (Map.Entry<Id, Node> pair : entrySet) {
             if (pair.getKey().getHeight() == height) {
-                quantity = quantity + pair.getKey().getNumber();
+                //  System.out.println("level" + pair);
+                quantity = quantity + 1;
+                // quantity = quantity + pair.getKey().getNumber();
             }
 
         }
@@ -93,10 +95,8 @@ public class Tree {
         if (nodeMap == null) {
              id = new Id(1, 1);
         } else {
-            // id = getNewNodeId(getHierarchy().getParent(node));
-//             id = new Id(getIdOfNode(getHierarchy().getParent(node)).getHeight() + 1, getHierarchy().getChildren(getHierarchy().getParent(node)).size());
         }
-       // Node tmp = new Node(node.getData(),id);
+
         nodeMap.put(node.getId(), node);
     }
 
@@ -142,11 +142,14 @@ public class Tree {
             return;
         }
 
+        // System.out.println("Nodework = "+node);
 
-        Node tmp = new Node(node.getData(), this.getNewNodeId(getNode(id)));///давай избавимся от этой процедуры?!?!?!?
+        // System.out.println("Quant=" + getQuantityNumbers(id.getHeight()+1)+"}");
+        // System.out.println("Children="+ getHierarchy().getChildren(getNode(id)));
+        Node tmp = new Node(node.getData(), getNewNodeId(getNode(id)));///давай избавимся от этой процедуры?!?!?!?
 
-        System.out.println("rere!" + getNewNodeId(this.getNode(id)).getNumber());
-        Node child = new Node(new Id(1,1));
+        //  System.out.println("rere!" + getNewNodeId(this.getNode(id)).getNumber());
+        //    Node child = new Node(new Id(1,1));
 
         rememberNodeMap(tmp);
 
@@ -154,7 +157,8 @@ public class Tree {
         Set<Node> nodeSet = new HashSet<Node>();
         nodeSet.add(tmp);
         if (this.getNodeMap().containsValue(node)) {
-            getNodeMap().remove(tmp.getId());
+            getNodeMap().remove(node.getId());
+            //  System.out.print("!!!!!!");
             //System.out.print("node parent= "+getRelations().getParent(node) + " node child = "+node);
             this.getHierarchy().deleteChild(getHierarchy().getParent(node),node);
         }
@@ -174,6 +178,7 @@ public class Tree {
                     addNodeForSplit(ch, getIdOfNode(parent));
                 }
             }
+
             deleteNode(getNode(id));
 
         } else {
@@ -241,7 +246,7 @@ public class Tree {
     }
 
 
-    public void addTreeInternal(Tree newTree,Id idParentSource,Id idParentTarget){
+    public void addTreeInternal(Tree newTree, Id idParentSource, Id idParentTarget) { //source -из текущего target - куда в новом дереве.
         Node node = getNode(new Id(idParentSource.getHeight(), idParentTarget.getNumber()));
         ArrayList<Node> children = new ArrayList<>(newTree.getHierarchy().getChildren(node));
         if (children != null) {
