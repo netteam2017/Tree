@@ -1,7 +1,9 @@
+import java.io.Serializable;
+
 /**
  * Created by user on 29.11.2017.
  */
-public class Id {
+public class Id implements Serializable {
     private int height;
     private int number;
 

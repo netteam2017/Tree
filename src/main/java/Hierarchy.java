@@ -1,3 +1,4 @@
+import java.io.Serializable;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
@@ -6,7 +7,7 @@ import java.util.Set;
 /**
  * Created by user on 25.11.2017.
  */
-public class Hierarchy {
+public class Hierarchy implements Serializable {
    private Map<Node,Set<Node>> children; //тут будет set;
    private Map<Node,Node> parent;
 

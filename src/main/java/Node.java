@@ -1,9 +1,9 @@
-import java.util.ArrayList;
+import java.io.Serializable;
 
 /**
  * Created by user on 16.11.2017.
  */
-public class Node {
+public class Node implements Serializable {
 
     final private Id id;
     final private int data;

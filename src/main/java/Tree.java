@@ -1,10 +1,11 @@
+import java.io.Serializable;
 import java.util.*;
 /*
 /**
  * Created by user on 16.11.2017.
  */
 
-public class Tree {
+public class Tree implements Serializable {
     private Node head;
     private Hierarchy hierarchy;
     private Map<Id, Node> nodeMap;
