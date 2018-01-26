@@ -9,9 +9,6 @@ public class Node implements Serializable {
     final private int data;
     static final int BASIC_DATA=1;
 
-
-
-
     public Node(Id id){
         this.id=id;
         this.data=BASIC_DATA;
@@ -25,9 +22,7 @@ public class Node implements Serializable {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-
         Node node = (Node) o;
-
         return id != null ? id.equals(node.id) : node.id == null;
 
     }
@@ -43,7 +38,7 @@ public class Node implements Serializable {
 
     public int getData(){
         return this.data;
-    };
+    }
 
 
     @Override

@@ -1,8 +1,5 @@
 import java.io.Serializable;
 
-/**
- * Created by user on 29.11.2017.
- */
 public class Id implements Serializable {
     private int height;
     private int number;
@@ -39,12 +36,9 @@ public class Id implements Serializable {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-
         Id id = (Id) o;
-
         if (height != id.height) return false;
         return number == id.number;
-
     }
 
     @Override

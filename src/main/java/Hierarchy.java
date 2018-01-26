@@ -8,35 +8,32 @@ import java.util.Set;
  * Created by user on 25.11.2017.
  */
 public class Hierarchy implements Serializable {
-   private Map<Node,Set<Node>> children; //тут будет set;
-   private Map<Node,Node> parent;
+    private Map<Node, Set<Node>> children;
+    private Map<Node, Node> parent;
 
-
-
-    Hierarchy(){
-        this.children=new HashMap<>();
-        this.parent= new HashMap<>();
+    Hierarchy() {
+        this.children = new HashMap<>();
+        this.parent = new HashMap<>();
     }
-
 
     public Node getParent(Node node) {
         return this.parent.get(node);
     }
 
-    public void setRelHead(Node head){
-        this.parent.put(head,null);
-        this.children.put(head,null);
+    public void setRelHead(Node head) {
+        this.parent.put(head, null);
+        this.children.put(head, null);
     }
 
-    public void setParent(Node node,Node parent) {//нужно удалить ребенка от родителя первого
+    public void setParent(Node node, Node parent) {//нужно удалить ребенка от родителя первого
         this.getChildren(getParent(node)).remove(node);
         System.out.print(node);
-        this.parent.put(node,parent);
-        if(this.children.get(parent)==null) {
+        this.parent.put(node, parent);
+        if (this.children.get(parent) == null) {
             Set<Node> childrenList = new HashSet<>();
             childrenList.add(node);
-            this.children.put(parent,childrenList);
-        }else{
+            this.children.put(parent, childrenList);
+        } else {
             this.children.get(parent).add(node);
         }
     }
@@ -52,42 +49,29 @@ public class Hierarchy implements Serializable {
 
 
     public void addChildren(Node parent, Set<Node> children) {
-        if(this.children.get(parent)!=null) {
+        if (this.children.get(parent) != null) {
             this.children.get(parent).addAll(children);
-        }else{
-
-            this.children.put(parent,children);
-            //  System.out.print(children);
+        } else {
+            this.children.put(parent, children);
         }
-
-        if (children!=null){
-            for(int i=0;i<children.size();i++){
-
-                this.parent.put(children.toArray(new Node[children.size()])[i],parent);
-
+        if (children != null) {
+            for (int i = 0; i < children.size(); i++) {
+                this.parent.put(children.toArray(new Node[children.size()])[i], parent);
             }
         }
     }
 
-    public void deleteChild(Node parent, Node node){//если что то проблема тут по удалению(нужно убрать if)
-
-
-        if(parent!=null) {
-            // children.remove(parent);
+    public void deleteChild(Node parent, Node node) {
+        if (parent != null) {
             this.children.get(parent).remove(node);
-
-            //getChildren(parent).remove(node);
-        }else{
+        } else {
             deleteParent(node);
         }
-
     }
 
-    public  void deleteParent(Node node){
-
+    public void deleteParent(Node node) {
         this.children.get(getParent(node)).remove(node);
         parent.remove(node);
-
     }
 
     @Override
@@ -107,7 +91,6 @@ public class Hierarchy implements Serializable {
 
         if (children != null ? !children.equals(hierarchy.children) : hierarchy.children != null) return false;
         return parent != null ? parent.equals(hierarchy.parent) : hierarchy.parent == null;
-
     }
 
     @Override
@@ -116,12 +99,4 @@ public class Hierarchy implements Serializable {
         result = 31 * result + (parent != null ? parent.hashCode() : 0);
         return result;
     }
-
-    //  public void setChild(Node child){
-    //    this.children.add(this.children.size(),child);
-    //}
-
-
-
-
 }
