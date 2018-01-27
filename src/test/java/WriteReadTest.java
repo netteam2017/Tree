@@ -1,10 +1,7 @@
-import org.junit.Test;
-
-import java.io.IOException;
-
 /**
  * Created by user on 14.01.2018.
  */
+/*
 public class WriteReadTest {
     @Test
     public void outSerialize() {
@@ -41,3 +38,4 @@ public class WriteReadTest {
     }
 
 }
+*/

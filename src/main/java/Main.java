@@ -38,8 +38,8 @@ public class Main {
 //tree.addTree(tree2,new Id(2,2));
         System.out.println(tree.getNodeMap());
 
-        WriteRead writeRead = new WriteRead();
-        writeRead.outSerialize(tree);
+        // WriteRead writeRead = new WriteRead();
+        //writeRead.outSerialize(tree);
 
 /*Tree tree1;
 WriteRead writeRead = new WriteRead();
