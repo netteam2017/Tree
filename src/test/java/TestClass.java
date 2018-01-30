@@ -1,10 +1,13 @@
+import junit.framework.Assert;
+import org.junit.Test;
+
 /**
  * Created by user on 15.11.2017.
  */
-/*
+
 public class TestClass {
     @Test
-    public  void createTree(){
+    public void createTree() {
         Tree tree1 = new Tree(1);
         tree1.addNode(new Node(2, new Id(1, 1)), new Id(1, 1));
         tree1.addNode(new Node(2, new Id(1, 1)), new Id(1, 1));
@@ -15,9 +18,8 @@ public class TestClass {
     }
 
 
-
     @Test
-    public void delete_and_addNode(){
+    public void delete_and_addNode() {
         Tree tree1 = new Tree(1);
         tree1.addNode(new Node(2, new Id(1, 1)), new Id(1, 1));
         tree1.addNode(new Node(3, new Id(1, 1)), new Id(1, 1));
@@ -56,7 +58,7 @@ public class TestClass {
         //uniq id
 
     }
-
+/*
     public void splitTree(){
         Tree tree1=new Tree(new Node(1));
         tree1.addNode(new Node(2),1,1);

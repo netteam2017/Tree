@@ -1,7 +1,11 @@
+import org.testng.annotations.Test;
+
+import java.io.IOException;
+
 /**
  * Created by user on 14.01.2018.
  */
-/*
+
 public class WriteReadTest {
     @Test
     public void outSerialize() {
@@ -27,7 +31,7 @@ public class WriteReadTest {
 
         Tree tree1;
         WriteRead writeRead = new WriteRead();
-        tree1 = writeRead.inSerialize();
+        tree1 = writeRead.inSerialize(1);//я добавила сюда  единицу,что здесь должно быть?!
         System.out.println(tree1.getNodeMap());
 
         if (tree.equals(tree1)) {
@@ -38,4 +42,3 @@ public class WriteReadTest {
     }
 
 }
-*/

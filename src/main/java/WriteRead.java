@@ -4,7 +4,7 @@ public class WriteRead {
 
 
     public void outSerialize(Tree tree) {
-        try (FileOutputStream fos = new FileOutputStream("C:\\Users\\user\\Desktop\\forSerDes\\Tree.txt");
+        try (FileOutputStream fos = new FileOutputStream("C:\\Users\\user\\Desktop\\forSerDes\\Tree" + tree.getHead().getData() + ".txt");
              ObjectOutputStream oos = new ObjectOutputStream(fos))
 
         {
@@ -17,7 +17,7 @@ public class WriteRead {
         }
     }
 
-    public Tree inSerialize() {
+    public Tree inSerialize(int data) {
         try (FileInputStream fis = new FileInputStream("C:\\Users\\user\\Desktop\\forSerDes\\Tree.txt");
              ObjectInputStream oin = new ObjectInputStream(fis)) {
             return new Tree((Tree) oin.readObject());
