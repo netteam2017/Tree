@@ -11,6 +11,7 @@ buildNumber.properties
 .idea
 *.iml
 .target
+.MyServer
 
 # Avoid ignoring Maven wrapper jar file (.jar files are usually ignored)
 !/.mvn/wrapper/maven-wrapper.jar
