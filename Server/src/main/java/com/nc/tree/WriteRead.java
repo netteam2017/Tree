@@ -22,7 +22,17 @@ public class WriteRead {
     public Tree inSerialize(int data) {
         try (FileInputStream fis = new FileInputStream("C:\\Users\\user\\Desktop\\forSerDes\\Tree.txt");
              ObjectInputStream oin = new ObjectInputStream(fis)) {
-            return new Tree((Tree) oin.readObject());
+            return new Tree((Tree) oin.readObject()) {
+                @Override
+                Node createNode(Node oldNode, Id newId) {
+                    return null;
+                }
+
+                @Override
+                Tree createTree(Node head) {
+                    return null;
+                }
+            };
         } catch (FileNotFoundException e) {
             throw new RuntimeException("load tree faild", e);
 

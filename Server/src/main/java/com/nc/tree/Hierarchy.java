@@ -9,71 +9,71 @@ import java.util.Set;
 /**
  * Created by user on 25.11.2017.
  */
-public class Hierarchy implements Serializable {
-    private Map<Node, Set<Node>> children;
-    private Map<Node, Node> parent;
+public class Hierarchy<NodeType extends Node> implements Serializable {
+    private Map<NodeType, Set<NodeType>> children;
+    private Map<NodeType, NodeType> parent;
 
     Hierarchy() {
         this.children = new HashMap<>();
         this.parent = new HashMap<>();
     }
 
-    public Node getParent(Node node) {
-        return this.parent.get(node);
+    public NodeType getParent(NodeType NodeType) {
+        return this.parent.get(NodeType);
     }
 
-    public void setRelHead(Node head) {
+    public void setRelHead(NodeType head) {
         this.parent.put(head, null);
         this.children.put(head, null);
     }
 
-    public void setParent(Node node, Node parent) {//нужно удалить ребенка от родителя первого
-        this.getChildren(getParent(node)).remove(node);
-        System.out.print(node);
-        this.parent.put(node, parent);
+    public void setParent(NodeType NodeType, NodeType parent) {//нужно удалить ребенка от родителя первого
+        this.getChildren(getParent(NodeType)).remove(NodeType);
+        System.out.print(NodeType);
+        this.parent.put(NodeType, parent);
         if (this.children.get(parent) == null) {
-            Set<Node> childrenList = new HashSet<>();
-            childrenList.add(node);
+            Set<NodeType> childrenList = new HashSet<>();
+            childrenList.add(NodeType);
             this.children.put(parent, childrenList);
         } else {
-            this.children.get(parent).add(node);
+            this.children.get(parent).add(NodeType);
         }
     }
 
-    public Set<Node> getChildren(Node node) {
-        //  System.out.print(this.children.get(node));
-        Set<Node> newChildren = new HashSet<>();
-        if (this.children.get(node) != null) {
-            newChildren.addAll(this.children.get(node));
+    public Set<NodeType> getChildren(NodeType NodeType) {
+        //  System.out.print(this.children.get(NodeType));
+        Set<NodeType> newChildren = new HashSet<>();
+        if (this.children.get(NodeType) != null) {
+            newChildren.addAll(this.children.get(NodeType));
         }
         return newChildren;
     }
 
 
-    public void addChildren(Node parent, Set<Node> children) {
+    public void addChildren(NodeType parent, Set<NodeType> children) {
         if (this.children.get(parent) != null) {
             this.children.get(parent).addAll(children);
         } else {
             this.children.put(parent, children);
         }
         if (children != null) {
-            for (int i = 0; i < children.size(); i++) {
-                this.parent.put(children.toArray(new Node[children.size()])[i], parent);
+            for (NodeType node : children) {
+                this.parent.put(node, parent);
             }
         }
     }
 
-    public void deleteChild(Node parent, Node node) {
+    public void deleteChild(NodeType parent, NodeType NodeType) {
         if (parent != null) {
-            this.children.get(parent).remove(node);
+            this.children.get(parent).remove(NodeType);
         } else {
-            deleteParent(node);
+            deleteParent(NodeType);
         }
     }
 
-    public void deleteParent(Node node) {
-        this.children.get(getParent(node)).remove(node);
-        parent.remove(node);
+    public void deleteParent(NodeType NodeType) {
+        this.children.get(getParent(NodeType)).remove(NodeType);
+        parent.remove(NodeType);
     }
 
     @Override

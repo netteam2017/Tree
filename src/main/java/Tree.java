@@ -110,16 +110,16 @@ public abstract class Tree<NodeType extends Node> implements Serializable {
         }
     }
 
-    public NodeType addNodeType(NodeType NodeType, Id id) {
+    public NodeType addNodeType(NodeType nodeType, Id id) {
         if (getNodeType(id) == null) {
             return null;
         }
-        NodeType tmp = createNode(NodeType, this.getNewNodeTypeId(getNodeType(id)));
-        rememberNodeTypeMap(tmp);
+
+        rememberNodeTypeMap(nodeType);
         Set<NodeType> NodeTypeSet = new HashSet<NodeType>();
-        NodeTypeSet.add(tmp);
+        NodeTypeSet.add(nodeType);
         getHierarchy().addChildren(getNodeType(id), NodeTypeSet);
-        return tmp;
+        return nodeType;
     }
 
     public void addNodeTypeForSplit(NodeType NodeType, Id id) {

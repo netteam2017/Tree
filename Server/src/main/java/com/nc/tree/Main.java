@@ -2,7 +2,7 @@ package com.nc.tree;
 
 /**
  * Created by user on 15.11.2017.
- */
+ *//*
 public class Main {
     public static void main(String[] args) {
 
@@ -49,5 +49,3 @@ tree1 = writeRead.inSerialize();
 System.out.println(tree1.getNodeMap());*/
 
 
-    }
-}

@@ -7,39 +7,37 @@ import java.util.*;
  * Created by user on 16.11.2017.
  */
 
-public class Tree implements Serializable {
-    private Node head;
+public abstract class Tree<NodeType extends Node> implements Serializable {
+    private NodeType head;
     private Hierarchy hierarchy;
-    private Map<Id, Node> nodeMap;
+    private Map<Id, NodeType> nodeMap;
 
-    public Tree(int data) {
-        if (nodeMap == null) {
-            this.head = new Node(data, new Id(1, 1));
+    public Tree(NodeType head) {
+        this.head = head;
             this.hierarchy = new Hierarchy();
             this.nodeMap = new HashMap<>();
             hierarchy.setRelHead(this.head);
             hierarchy.addChildren(this.head, null);
             this.nodeMap.put(new Id(1, 1), head);
 
-        } else {
-            System.out.print("Error. Tree already exist");
-        }
+
     }
 
-    public Tree() {
-        if (nodeMap == null) {
-            this.head = new Node(new Id(1, 1));
-            this.nodeMap = new HashMap<>();
-            this.nodeMap.put(head.getId(), head);
-            this.hierarchy = new Hierarchy();
+    abstract NodeType createNode(NodeType oldNode, Id newId);
 
-        } else {
-            System.out.print("Error. Tree already exist");
-        }
-    }
+    abstract Tree<NodeType> createTree(NodeType head);
 
-    public Node getNode(Id id) {
-        Node tmp = null;
+    /*  public Tree() {
+              this.head = new NodeType(new Id(1, 1));
+              this.nodeMap = new HashMap<>();
+              this.nodeMap.put(head.getId(), head);
+              this.hierarchy = new Hierarchy();
+
+
+      }
+  */
+    public NodeType getNodeType(Id id) {
+        NodeType tmp = null;
 
         if (this.nodeMap.containsKey(id) == true) {
             tmp = getNodeMap().get(id);
@@ -49,23 +47,23 @@ public class Tree implements Serializable {
         return tmp;
     }
 
-    public Map<Id, Node> getNodeMap() {
+    public Map<Id, NodeType> getNodeMap() {
         return this.nodeMap;
     }
 
-    public Hierarchy getHierarchy() {
+    public Hierarchy<NodeType> getHierarchy() {
         return hierarchy;
     }
 
-    public Node getHead() {
+    public NodeType getHead() {
         return this.head;
     }
 
-    public Id getIdOfNode(Node node) {
+    public Id getIdOfNodeType(NodeType NodeType) {
         Id id = new Id(0, 0);
-        Set<Map.Entry<Id, Node>> entrySet = getNodeMap().entrySet();
-        for (Map.Entry<Id, Node> pair : entrySet) {
-            if (node.equals(pair.getValue())) {
+        Set<Map.Entry<Id, NodeType>> entrySet = getNodeMap().entrySet();
+        for (Map.Entry<Id, NodeType> pair : entrySet) {
+            if (NodeType.equals(pair.getValue())) {
                 id = pair.getKey();
                 return pair.getKey();
             }
@@ -73,7 +71,7 @@ public class Tree implements Serializable {
         return id;
     }
 
-    public Id getNewNodeId(Node parent) {
+    public Id getNewNodeTypeId(NodeType parent) {
         int height = parent.getId().getHeight();
         Id newId = new Id(height + 1, getQuantityNumbers(height + 1) + 1);
         return newId;
@@ -81,8 +79,8 @@ public class Tree implements Serializable {
 
     public int getQuantityNumbers(int height) {
         int quantity = 0;
-        Set<Map.Entry<Id, Node>> entrySet = getNodeMap().entrySet();
-        for (Map.Entry<Id, Node> pair : entrySet) {
+        Set<Map.Entry<Id, NodeType>> entrySet = getNodeMap().entrySet();
+        for (Map.Entry<Id, NodeType> pair : entrySet) {
             if (pair.getKey().getHeight() == height) {
                 quantity = quantity + 1;
             }
@@ -90,95 +88,94 @@ public class Tree implements Serializable {
         return quantity;
     }
 
-    public void rememberNodeMap(Node node) {
+    public void rememberNodeTypeMap(NodeType NodeType) {
         Id id;
         if (nodeMap == null) {
             id = new Id(1, 1);
         } else {
         }
 
-        nodeMap.put(node.getId(), node);
+        nodeMap.put(NodeType.getId(), NodeType);
     }
 
-    public void deleteNode(Node node) {
-        if (getNodeMap().containsValue(node) == false) {
+    public void deleteNodeType(NodeType NodeType) {
+        if (getNodeMap().containsValue(NodeType) == false) {
             return;
         } else {
-            ArrayList<Node> newnode = new ArrayList<>(getHierarchy().getChildren(node));
-            for (Node ch : newnode) {
+            ArrayList<NodeType> newNodeType = new ArrayList<>(getHierarchy().getChildren(NodeType));
+            for (NodeType ch : newNodeType) {
                 if (ch != null)
-                    deleteNode(ch);
+                    deleteNodeType(ch);
             }
-            getHierarchy().deleteChild(getHierarchy().getParent(node), node);
-            getNodeMap().remove(node.getId());
+            getHierarchy().deleteChild(getHierarchy().getParent(NodeType), NodeType);
+            getNodeMap().remove(NodeType.getId());
         }
     }
 
-    public Node addNode(Node node, Id id) {
-        if (getNode(id) == null) {
+    public NodeType addNodeType(NodeType nodeType, Id id) {
+        if (getNodeType(id) == null) {
             return null;
         }
-        Node tmp = new Node(node.getData(), this.getNewNodeId(getNode(id)));
-        Node child = new Node(new Id(1, 1));
-        rememberNodeMap(tmp);
-        Set<Node> nodeSet = new HashSet<Node>();
-        nodeSet.add(tmp);
-        getHierarchy().addChildren(getNode(id), nodeSet);
-        return tmp;
+
+        rememberNodeTypeMap(nodeType);
+        Set<NodeType> NodeTypeSet = new HashSet<NodeType>();
+        NodeTypeSet.add(nodeType);
+        getHierarchy().addChildren(getNodeType(id), NodeTypeSet);
+        return nodeType;
     }
 
-    public void addNodeForSplit(Node node, Id id) {
-        if (getNode(id) == null) {
+    public void addNodeTypeForSplit(NodeType NodeType, Id id) {
+        if (getNodeType(id) == null) {
             return;
         }
-        Node tmp = new Node(node.getData(), getNewNodeId(getNode(id)));
-        rememberNodeMap(tmp);
-        Set<Node> nodeSet = new HashSet<Node>();
-        nodeSet.add(tmp);
-        if (this.getNodeMap().containsValue(node)) {
-            getNodeMap().remove(node.getId());
-            this.getHierarchy().deleteChild(getHierarchy().getParent(node), node);
+        NodeType tmp = createNode(NodeType, getNewNodeTypeId(getNodeType(id)));
+        rememberNodeTypeMap(tmp);
+        Set<NodeType> NodeTypeSet = new HashSet<NodeType>();
+        NodeTypeSet.add(tmp);
+        if (this.getNodeMap().containsValue(NodeType)) {
+            getNodeMap().remove(NodeType.getId());
+            this.getHierarchy().deleteChild(getHierarchy().getParent(NodeType), NodeType);
         }
-        getHierarchy().addChildren(getNode(id), nodeSet);
+        getHierarchy().addChildren(getNodeType(id), NodeTypeSet);
     }
 
     public void split(Id id) {
-        ArrayList<Node> children = new ArrayList<>(getHierarchy().getChildren(getNode(id)));
+        ArrayList<NodeType> children = new ArrayList<>(getHierarchy().getChildren(getNodeType(id)));
         if (getNodeMap().containsKey(id)) {
-            Node parent = getHierarchy().getParent(getNode(id));
-            if (getHierarchy().getChildren(getNode(id)) != null) {
-                for (Node ch : children) {
-                    System.out.println(getIdOfNode(parent).getHeight());
-                    addNodeForSplit(ch, getIdOfNode(parent));
+            NodeType parent = getHierarchy().getParent(getNodeType(id));
+            if (getHierarchy().getChildren(getNodeType(id)) != null) {
+                for (NodeType ch : children) {
+                    System.out.println(getIdOfNodeType(parent).getHeight());
+                    addNodeTypeForSplit(ch, getIdOfNodeType(parent));
                 }
             }
-            deleteNode(getNode(id));
+            deleteNodeType(getNodeType(id));
         } else {
             System.out.print("Error of id");
         }
     }
 
-    public Tree(Tree otherTree) {
+    public Tree(Tree<NodeType> otherTree) {
         this.head = otherTree.getHead();
         this.nodeMap = otherTree.getNodeMap();
         this.hierarchy = otherTree.getHierarchy();
     }
 
     public Tree createTree(Id id) {
-        Tree newTree = new Tree(getNode(id).getData());
-        Node node = getNode(id);
-        ArrayList<Node> child = new ArrayList<>();
-        collect(newTree, newTree.getHead(), node);
+        Tree<NodeType> newTree = createTree(createNode(this.getNodeType(id), new Id(1, 1)));
+        NodeType NodeType = getNodeType(id);
+        ArrayList<NodeType> child = new ArrayList<>();
+        collect(newTree, newTree.getHead(), NodeType);
         return newTree;
     }
 
-    public void collect(Tree newTree, Node newnode, Node node) {
-        ArrayList<Node> children = new ArrayList<>(getHierarchy().getChildren(node));
+    public void collect(Tree<NodeType> newTree, NodeType newnode, NodeType NodeType) {
+        ArrayList<NodeType> children = new ArrayList<>(getHierarchy().getChildren(NodeType));
         if (children != null) {
             if (children.size() != 0) {
-                for (Node ch : children) {
-                    System.out.println("Idnew " + newTree.getIdOfNode(node).getHeight());
-                    Node newNode = newTree.addNode(ch, newnode.getId());
+                for (NodeType ch : children) {
+                    System.out.println("Idnew " + newTree.getIdOfNodeType(NodeType).getHeight());
+                    NodeType newNode = newTree.addNodeType(ch, newnode.getId());
                     if (getHierarchy().getChildren(ch) != null)
                         collect(newTree, newNode, ch);
                 }
@@ -186,31 +183,31 @@ public class Tree implements Serializable {
         }
     }
 
-    public void addTree(Tree newTree, Id idParent) {
-        Node node = newTree.getHead();
-        System.out.println("head = " + node);
-        Node tmp;
-        tmp = addNode(node, idParent);
+    public void addTree(Tree<NodeType> newTree, Id idParent) {
+        NodeType NodeType = newTree.getHead();
+        System.out.println("head = " + NodeType);
+        NodeType tmp;
+        tmp = addNodeType(NodeType, idParent);
         System.out.println("tmp = " + tmp);
-        ArrayList<Node> children = new ArrayList<>(newTree.getHierarchy().getChildren(node));
+        ArrayList<NodeType> children = new ArrayList<>(newTree.getHierarchy().getChildren(NodeType));
         if (children != null) {
             if (children.size() != 0) {
-                for (Node child : children) {
-                    addTreeInternal(newTree, node.getId(), tmp.getId());
+                for (NodeType child : children) {
+                    addTreeInternal(newTree, NodeType.getId(), tmp.getId());
                 }
             }
         }
     }
 
     public void addTreeInternal(Tree newTree, Id idParentSource, Id idParentTarget) { //source -из текущего target - куда в новом дереве.
-        Node node = getNode(new Id(idParentSource.getHeight(), idParentSource.getNumber()));
-        System.out.println("node = " + node);
+        NodeType NodeType = getNodeType(new Id(idParentSource.getHeight(), idParentSource.getNumber()));
+        System.out.println("NodeType = " + NodeType);
         System.out.println("target = " + idParentTarget);
-        ArrayList<Node> children = new ArrayList<>(newTree.getHierarchy().getChildren(node));
+        ArrayList<NodeType> children = new ArrayList<>(newTree.getHierarchy().getChildren(NodeType));
         if (children != null) {
             if (children.size() != 0) {
-                for (Node child : children) {
-                    Node tmp = addNode(child, idParentTarget);
+                for (NodeType child : children) {
+                    NodeType tmp = addNodeType(child, idParentTarget);
                     addTreeInternal(newTree, child.getId(), tmp.getId());
                 }
             }
