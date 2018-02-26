@@ -2,7 +2,7 @@
  * Created by user on 06.02.2018.
  */
 public class TaskTree extends Tree<Task> {
-    public TaskTree(Tree<Task> otherTree) {
+    public TaskTree(Task otherTree) {
         super(otherTree);
     }
 

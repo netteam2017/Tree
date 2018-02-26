@@ -3,7 +3,7 @@ import java.io.*;
 public class WriteRead {
 
 
-    public void outSerialize(Tree tree) {
+    public void outSerialize(TaskTree tree) {
         try (FileOutputStream fos = new FileOutputStream("C:\\Users\\user\\Desktop\\forSerDes\\Tree" + tree.getHead().getData() + ".txt");
              ObjectOutputStream oos = new ObjectOutputStream(fos))
 
@@ -17,10 +17,10 @@ public class WriteRead {
         }
     }
 
-    public Tree inSerialize(int data) {
+    public Tree inSerialize() {
         try (FileInputStream fis = new FileInputStream("C:\\Users\\user\\Desktop\\forSerDes\\Tree.txt");
              ObjectInputStream oin = new ObjectInputStream(fis)) {
-            return new Tree((Tree) oin.readObject());
+            return new TaskTree((Task) oin.readObject());
         } catch (FileNotFoundException e) {
             throw new RuntimeException("load tree faild", e);
 

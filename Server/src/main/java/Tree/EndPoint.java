@@ -1,19 +1,26 @@
 package Tree;
 
+import com.google.gson.Gson;
 import com.nc.tree.Id;
 import com.nc.tree.Task;
 import com.nc.tree.TaskManager;
 import com.nc.tree.WriteRead;
 
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
+import java.io.IOException;
+import java.io.PrintWriter;
 
 
 /**
  * Created by user on 01.02.2018.
  */
 @Path("endpoint")
-public class EndPoint {
+public class EndPoint extends HttpServlet {
 
     WriteRead writeRead;
     TaskManager taskManager;
@@ -23,6 +30,7 @@ public class EndPoint {
         TaskManager taskManager = new TaskManager(task);
 
     }
+
 
     //коснтруктор написать, вызов классов врайт рд и класс с задачами.
     @GET
@@ -34,16 +42,17 @@ public class EndPoint {
 
     @GET
     @Path("/alltasks")
-    @Produces(MediaType.TEXT_PLAIN)
-    public String getAllTasks() { //нет метода
-        return taskManager.getAllTasks();
+    @Produces() {
+        // public String getAllTasks() { //нет метода
+        //   return taskManager.getAllTasks();
     }
 
     @GET
     @Path("/task")
-    public Task getTask(Id id) {
-        return taskManager.getTask(id);
-
+    public String getTask(Id id) {
+        Gson gson = new Gson();
+        String json = gson.toJson(taskManager.getTask(id));
+        return json;
     }
 
     @DELETE
@@ -55,9 +64,22 @@ public class EndPoint {
 
     @POST
     @Path("/update")
-    public void updateTask(Id id, String newName) {
+    public void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 
-        taskManager.updateTask(id, newName);
+        int height = Integer.parseInt(req.getParameter("height"));
+        int weight = Integer.parseInt(req.getParameter("weight"));
+        String name = req.getParameter("name");
+
+        taskManager.updateTask(new Id(height, weight), name);
+        resp.setContentType("text/html;charset=utf-8");
+
+        PrintWriter pw = resp.getWriter();
+        pw.println("<H1>Hello, world! или Привет мир</H1>");
+
+    }
+
+    public void updateTask() {
+
     }
 
     @POST
