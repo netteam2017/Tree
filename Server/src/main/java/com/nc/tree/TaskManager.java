@@ -28,6 +28,7 @@ public class TaskManager extends Tree {
         return (Task) node;
     }
 
+
     @Override
     Node createNode(Node oldNode, Id newId) {
         return null;
