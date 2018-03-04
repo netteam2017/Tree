@@ -2,15 +2,15 @@ package Project;
 
 import java.io.*;
 
+import java.io.*;
+
 public class WriteRead {
 
-
-    public void outSerialize(Tree tree) {
-        try (FileOutputStream fos = new FileOutputStream("C:\\Users\\user\\Desktop\\forSerDes\\Tree" + tree.getHead().getData() + ".txt");
+    public void outSerialize(TaskTree taskTree) {
+        try (FileOutputStream fos = new FileOutputStream("Tree.txt");
              ObjectOutputStream oos = new ObjectOutputStream(fos))
-
         {
-            oos.writeObject(tree);
+            oos.writeObject(taskTree);
             oos.flush();
             oos.close();
         } catch (IOException e) {
@@ -19,20 +19,10 @@ public class WriteRead {
         }
     }
 
-    public Tree inSerialize(int data) {
-        try (FileInputStream fis = new FileInputStream("C:\\Users\\user\\Desktop\\forSerDes\\Tree.txt");
+    public TaskTree inSerialize() {
+        try (FileInputStream fis = new FileInputStream("Tree.txt");
              ObjectInputStream oin = new ObjectInputStream(fis)) {
-            return new Tree((Tree) oin.readObject()) {
-                @Override
-                Node createNode(Node oldNode, Id newId) {
-                    return null;
-                }
-
-                @Override
-                Tree createTree(Node head) {
-                    return null;
-                }
-            };
+            return new TaskTree((TaskTree) oin.readObject());
         } catch (FileNotFoundException e) {
             throw new RuntimeException("load tree faild", e);
 

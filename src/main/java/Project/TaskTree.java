@@ -4,8 +4,35 @@ package Project;
  * Created by user on 06.02.2018.
  */
 public class TaskTree extends Tree<Task> {
-    public TaskTree(Task task) {
-        super(task);
+
+    public TaskTree(String executor, String name) {
+        super(new Task(executor, name, new Id(1,1)));
+    }
+
+    public TaskTree(Tree<Task> otherTree) {
+        super(otherTree);
+    }
+
+    public Task addTask(String executor, String name, Task parent) {
+        Id id = getNewNodeTypeId(parent);
+        Task task = new Task(executor, name, id);
+        addNodeType(task, getIdOfNodeType(parent));
+        return task;
+    }
+
+    public void updateTask(Id id, String newName) {
+        Task task = getTask(id);
+        task.setName(newName);                                            /////////////////traves
+    }
+
+    public void deleteTask(Id id) {
+        Task task = getNodeType(id);
+        deleteNodeType(task);
+    }
+
+    public Task getTask(Id id) {
+        Node node = getNodeType(id);
+        return (Task) node;
     }
 
 
