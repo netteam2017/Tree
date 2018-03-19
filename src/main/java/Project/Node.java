@@ -11,15 +11,16 @@ public class Node implements Serializable {
     final private int data;
     static final int BASIC_DATA = 1;
 
+    public Node(){
+        id=new Id(1,1);
+        data=0;
+    }
     public Node(Id id) {
         this.id = id;
         this.data = BASIC_DATA;
     }
 
-    public Node(int data, Id id) {
-        this.id = id;
-        this.data = data;
-    }
+
 
     @Override
     public boolean equals(Object o) {

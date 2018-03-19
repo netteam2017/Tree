@@ -1,5 +1,10 @@
 package Project;
 
+import com.sun.org.apache.xalan.internal.xsltc.compiler.util.NodeType;
+
+import java.util.Map;
+import java.util.Set;
+
 public class TaskManager extends Tree {
 
     public TaskManager(Node head) {
@@ -13,6 +18,15 @@ public class TaskManager extends Tree {
         return task;
     }
 
+    public Task getTaskOnName(String name){
+        Task task = null;
+        Set<Map.Entry<Id, Task>> entrySet = getNodeMap().entrySet();
+        for (Map.Entry<Id, Task> pair : entrySet){
+            if (pair.getValue().getName()==name)
+                task=pair.getValue();
+        }
+        return task;
+    }
     public void updateTask(Id id, String newName) {
         Task task = getTask(id);
         task.name = newName;

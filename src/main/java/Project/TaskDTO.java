@@ -1,17 +1,38 @@
 package Project;
 
-/**
- * Created by user on 15.02.2018.
- */
+import com.fasterxml.jackson.annotation.JsonAutoDetect;
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonTypeInfo;
+@JsonAutoDetect
 public class TaskDTO {
-    public Task task;
-    public Id parentId;
-    public String taskTreeName;
+    public String name;
 
-    public TaskDTO(Task task, Id parentId, String taskTreeName) {
-        this.task = task;
-        this.parentId = parentId;
-        this.taskTreeName = taskTreeName;
+    public String executor;
+
+@JsonCreator
+        TaskDTO(){}
+     TaskDTO(@JsonProperty("executor")  String executor, @JsonProperty("name")  String name) {
+         this.name = name;
+        this.executor = executor;
     }
 
+
+
+
+   /* public void setName(String name) {
+        this.name = name;
+    }
+
+    public void setSpentTime(long spentTime) {
+        this.spentTime = spentTime;
+    }
+
+    public void setExecutor(String executor) {
+        this.executor = executor;
+    }
+
+    public void setStatus(Status status) {
+        this.status = status;
+    }*/
 }

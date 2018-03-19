@@ -1,38 +1,52 @@
 package Project;
 
+import com.fasterxml.jackson.annotation.*;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.fasterxml.jackson.databind.ser.std.ToStringSerializer;
+
 import java.io.Serializable;
+@JsonTypeInfo(use=JsonTypeInfo.Id.CLASS, include=JsonTypeInfo.As.PROPERTY, property="@class")
+public class Id {
 
-public class Id implements Serializable {
-    private int height;
-    private int number;
 
-    public Id(int height, int number) {
+    private final int height;
+
+    private final int number;
+@JsonCreator
+public Id(){
+    height=1;
+    number=1;
+}
+    public Id(@JsonProperty("h") int height, @JsonProperty("n") int number) {
         this.height = height;
         this.number = number;
     }
+
 
     public int getHeight() {
         return height;
     }
 
+/*
     public void setHeight(int height) {
         if (height > -1)
             this.height = height;
         else
             throw new IndexOutOfBoundsException(" height is negative ");
-    }
+    }*/
+
 
     public int getNumber() {
         return number;
     }
 
-    public void setNumber(int number) {
+   /* public void setNumber(int number) {
         if (number > -1) {
             this.number = number;
         } else {
             throw new IndexOutOfBoundsException(" number is negative");
         }
-    }
+    }*/
 
     @Override
     public boolean equals(Object o) {

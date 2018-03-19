@@ -1,12 +1,16 @@
 package Project;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 public class Task extends Node{
-    private   String name;
+    public    String name;
     private   long spentTime;
     private  String executor;
     private  Status status;
-
-    public Task(String executor, String name, Id id) {
+   @JsonCreator
+   public Task(){}
+    public Task(@JsonProperty("exe") String executor,@JsonProperty("name") String name,@JsonProperty("id") Id id) {
         super(id);
         this.name = name;
         this.executor = executor;
