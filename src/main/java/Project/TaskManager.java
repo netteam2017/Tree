@@ -11,10 +11,10 @@ public class TaskManager extends Tree {
         super(head);
     }
 
-    public Task addTask(String executor, String name, Node parent) {
-        Id id = getNewNodeTypeId(parent);
+    public Task addTask(String executor, String name, Id parentId) { //WARNING!!! I changed this method
+        Id id = getNewNodeTypeId(new Node(parentId));
         Task task = new Task(executor, name, id);
-        addNodeType(task, getIdOfNodeType(parent));
+        addNodeType(task, parentId);
         return task;
     }
 

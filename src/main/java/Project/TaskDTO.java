@@ -6,15 +6,13 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 @JsonAutoDetect
 public class TaskDTO {
-    public String name;
-
-    public String executor;
+    public Task task;
+    public Id parentId;
+    public String taskTreeName;
 
 @JsonCreator
         TaskDTO(){}
      TaskDTO(@JsonProperty("executor")  String executor, @JsonProperty("name")  String name) {
-         this.name = name;
-        this.executor = executor;
     }
 
 

@@ -1,5 +1,8 @@
 package Project;
 
+import java.util.Map;
+import java.util.Set;
+
 /**
  * Created by user on 06.02.2018.
  */
@@ -17,6 +20,15 @@ public class TaskTree extends Tree<Task> {
         Id id = getNewNodeTypeId(parent);
         Task task = new Task(executor, name, id);
         addNodeType(task, getIdOfNodeType(parent));
+        return task;
+    }
+    public Task getTaskOnName(String name){
+        Task task = null;
+        Set<Map.Entry<Id, Task>> entrySet = getNodeMap().entrySet();
+        for (Map.Entry<Id, Task> pair : entrySet){
+            if (pair.getValue().getName()==name)
+                task=pair.getValue();
+        }
         return task;
     }
 
