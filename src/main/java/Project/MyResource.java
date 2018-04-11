@@ -14,6 +14,8 @@ import javax.servlet.http.HttpServletResponse;
 import javax.ws.rs.*;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Request;
+import javax.ws.rs.core.Response;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.HashSet;
@@ -22,46 +24,51 @@ import java.util.Set;
 /**
  * Root resource (exposed at "myresource" path)
  */
-@Path("/MyResource")
 
-public class MyResource extends HttpServlet {
+@Path("/myresource")
+
+public class MyResource  {
     TaskManager taskManager = new TaskManager(new Node(new Id()));
 
     @GET
-    @Path("/task")
+    @Path("/task/{taskName}")
     @Consumes(MediaType.TEXT_HTML)
-
     @Produces(MediaType.APPLICATION_JSON)
-
-    public CompositeTaskDTO getTaskTree(String name) {
-        System.out.print(name);
+    public CompositeTaskDTO getTaskTree(@PathParam("taskName") String name) {
+       // System.out.print(name);
 
         TaskTree taskTree = new TaskTree("1","1");
 
-        Task task = taskTree.getTaskOnName("1");
+        Task task = taskTree.getTaskOnName(name);
         CompositeTaskDTO compositeTaskDTO = new CompositeTaskDTO(task,taskTree.getHierarchy().getChildren(task));
 
         return compositeTaskDTO;
     }
+    @POST
+    @Path("/update")
+    //@Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.TEXT_PLAIN)
+    public void updateTask() {
+        //taskDTO = new TaskDTO(new Task("1","1",new Id(1,1)),"rer",new Id(1,1));
+        // taskTree.updateTask(taskDTO.task.getId(),taskDTO.task.name);
+        /////////////////traves
+    }
+/*
+    @POST
+    @Path("/delete")
+    public void deleteTask(String taskTreename, Id taskId) {
+        taskTree.deleteTask(taskId);
+    }
+
 
     @POST
     @Path("/create")
-    public void createTask(TaskDTO taskDTO){
+    public void createTask(TaskDTO taskDTO) {
 
-        taskManager.addTask(taskDTO.task.getExecutor(),taskDTO.task.getName(),taskDTO.parentId);
+        taskTree.addTask(taskDTO.task.getExecutor(),taskDTO.task.getName(),taskTree.getTask(taskDTO.parentId));
     }
-
-    @POST
-    @Path("/update")
-    public void updateTask(TaskDTO taskDTO){
-        taskManager.updateTask(taskDTO.task.getId(),taskDTO.taskTreeName);
-    }
-    @POST
-    @Path("/delete")
-    public void deleteTask(String taskTreename, Id taskId){
-        taskManager.deleteTask(taskId);
-    }
-    /*
+*/
+/*
     public void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         response.setContentType("text/html");
         String varTextA = "Hello World!";
