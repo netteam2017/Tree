@@ -58,7 +58,7 @@ public class MyResource  {
     @POST
     @Path("/delete") //вот этот еще не работает я скину чуть позже
     @Consumes(MediaType.APPLICATION_JSON)
-    public void deleteTask(String taskTreename, Id taskId) {
+    public void deleteTask( @QueryParam("taskTreeName") String taskTreeName,Id taskId) {
         taskTree.deleteTask(taskId);
     }
 
