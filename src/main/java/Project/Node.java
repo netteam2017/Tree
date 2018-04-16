@@ -8,16 +8,16 @@ import java.io.Serializable;
 public class Node implements Serializable {
 
     final private Id id;
-    final private int data;
+
     static final int BASIC_DATA = 1;
 
     public Node(){
         id=new Id(1,1);
-        data=0;
+
     }
     public Node(Id id) {
         this.id = id;
-        this.data = BASIC_DATA;
+
     }
 
 
@@ -40,16 +40,13 @@ public class Node implements Serializable {
         return this.id;
     }
 
-    public int getData() {
-        return this.data;
-    }
+
 
 
     @Override
     public String toString() {
         return "Node{" +
                 "id=" + id +
-                ", data=" + data +
                 '}';
     }
 }
