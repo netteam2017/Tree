@@ -4,15 +4,20 @@ import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
-@JsonAutoDetect
-public class TaskDTO {
+
+import java.io.Serializable;
+
+public class TaskDTO implements Serializable {
     public Task task;
     public Id parentId;
     public String taskTreeName;
 
 @JsonCreator
         TaskDTO(){}
-     TaskDTO(@JsonProperty("executor")  String executor, @JsonProperty("name")  String name) {
+     TaskDTO(@JsonProperty("task") Task task, @JsonProperty("parentId") Id parentId, @JsonProperty("taskTreeName") String taskTreeName) {
+         this.task=task;
+         this.parentId=parentId;
+         this.taskTreeName=taskTreeName;
     }
 
 

@@ -29,7 +29,7 @@ import java.util.Set;
 
 public class MyResource  {
     TaskManager taskManager = new TaskManager(new Node(new Id()));
-
+    TaskTree taskTree = new TaskTree("1","1");
     @GET
     @Path("/task/{taskName}")
     @Consumes(MediaType.TEXT_HTML)
@@ -37,25 +37,27 @@ public class MyResource  {
     public CompositeTaskDTO getTaskTree(@PathParam("taskName") String name) {
        // System.out.print(name);
 
-        TaskTree taskTree = new TaskTree("1","1");
+
 
         Task task = taskTree.getTaskOnName(name);
         CompositeTaskDTO compositeTaskDTO = new CompositeTaskDTO(task,taskTree.getHierarchy().getChildren(task));
 
         return compositeTaskDTO;
     }
+  // TaskDTO taskDTO = new TaskDTO(new Task("k","newname",new Id()),new Id(1,1),"newTree");
     @POST
     @Path("/update")
-    //@Consumes(MediaType.APPLICATION_JSON)
-    @Produces(MediaType.TEXT_PLAIN)
-    public void updateTask() {
-        //taskDTO = new TaskDTO(new Task("1","1",new Id(1,1)),"rer",new Id(1,1));
-        // taskTree.updateTask(taskDTO.task.getId(),taskDTO.task.name);
+    @Consumes(MediaType.APPLICATION_JSON)
+    //@Produces(MediaType.APPLICATION_JSON)
+    public void updateTask( TaskDTO taskDTO) {
+         taskDTO = new TaskDTO(new Task("k","newname",new Id()),new Id(1,1),"newTree");
+         taskTree.updateTask(taskDTO.task.getId(),taskDTO.task.name);
         /////////////////traves
     }
-/*
+
     @POST
-    @Path("/delete")
+    @Path("/delete") //вот этот еще не работает я скину чуть позже
+    @Consumes(MediaType.APPLICATION_JSON)
     public void deleteTask(String taskTreename, Id taskId) {
         taskTree.deleteTask(taskId);
     }
@@ -63,11 +65,12 @@ public class MyResource  {
 
     @POST
     @Path("/create")
+    @Consumes(MediaType.APPLICATION_JSON)
     public void createTask(TaskDTO taskDTO) {
 
         taskTree.addTask(taskDTO.task.getExecutor(),taskDTO.task.getName(),taskTree.getTask(taskDTO.parentId));
     }
-*/
+
 /*
     public void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         response.setContentType("text/html");
