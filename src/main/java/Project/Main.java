@@ -2,10 +2,14 @@ package Project;
 
 /**
  * Created by user on 15.11.2017.
- *//*
+ */
 public class Main {
     public static void main(String[] args) {
-
+        TaskTree taskTree = new TaskTree("1","1");
+        System.out.print(taskTree.parseId(""));
+    }
+}
+/*
 // Node nodeTest = new Node();
         Node node1 = new Node(1, new Id(1, 1));
         Node node2 = new Node(2, new Id(1, 1));
