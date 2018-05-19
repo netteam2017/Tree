@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+
+</head>
+<body>
+
+<p id="task"></p>
+<script>
+var text = Packages.Project.MyResource;
+var jsontext = '{"task":{"name":"1","executor":"1","spentTime":0,"status":"NOT_STARTED"},"subTasks":[{"name":"2","executor":"2","spentTime":0,"status":"NOT_STARTED"}]}';
+var contact = JSON.parse(jsontext);
+document.write(contact.task.name + ", " + contact.subTasks[0].name);
+    </script>
+</body>
+</html>

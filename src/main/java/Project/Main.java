@@ -6,7 +6,12 @@ package Project;
 public class Main {
     public static void main(String[] args) {
         TaskTree taskTree = new TaskTree("1","1");
-        System.out.print(taskTree.parseId(""));
+        Task task2 = taskTree.addTask("subTask", "executor2", taskTree.getHead());
+        taskTree.addTask("subsubTask", "3", task2);
+
+       //System.out.print( taskTree.getHierarchy().getChildren(taskTree.getTask(new Id(3,1))));
+        CompositeTaskDTO cd = new CompositeTaskDTO(taskTree,"tr");
+      //  System.out.print(taskTree.parseId(""));
     }
 }
 /*

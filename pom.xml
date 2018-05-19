@@ -22,6 +22,7 @@
                     <target>1.7</target>
                 </configuration>
             </plugin>
+
             <plugin>
                 <groupId>org.eclipse.jetty</groupId>
                 <artifactId>jetty-maven-plugin</artifactId>
@@ -33,6 +34,8 @@
                         <!--host>localhost</host-->
                         <port>9909</port>
                     </httpConnector>
+
+
 
                 </configuration>
             </plugin>
@@ -113,4 +116,7 @@
         <jersey.version>2.16</jersey.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>
+
+
+
 </project>

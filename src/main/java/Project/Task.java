@@ -10,7 +10,7 @@ public class Task extends Node{
     private  Status status;
    @JsonCreator
    public Task(){}
-    public Task(@JsonProperty("exe") String executor,@JsonProperty("name") String name,@JsonProperty("id") Id id) {
+    public Task(@JsonProperty("executor") String executor,@JsonProperty("name") String name,@JsonProperty("id") Id id) {
         super(id);
         this.name = name;
         this.executor = executor;

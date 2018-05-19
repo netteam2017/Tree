@@ -1,29 +1,36 @@
 package Project;
 
-import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
+import java.io.IOException;
 import java.io.Serializable;
 
 public class TaskDTO implements Serializable {
     public Task task;
-    public Id parentId;
+    public String parentId;
     public String taskTreeName;
+
 
 @JsonCreator
         TaskDTO(){}
-     TaskDTO(@JsonProperty("task") Task task, @JsonProperty("parentId") Id parentId, @JsonProperty("taskTreeName") String taskTreeName) {
+     TaskDTO(@JsonProperty("task") Task task, @JsonProperty("parentId") String parentId, @JsonProperty("taskTreeName") String taskTreeName) throws IOException{
          this.task=task;
-         this.parentId=parentId;
+         this.parentId = parentId;
          this.taskTreeName=taskTreeName;
+
     }
 
+    @Override
+    public String toString() {
+        return
+                "{\"task\":" + task +
+                ", \"parentId\":" + parentId +
 
-
-
-   /* public void setName(String name) {
+                '}';
+    }
+    /* public void setName(String name) {
         this.name = name;
     }
 

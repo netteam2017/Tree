@@ -7,7 +7,7 @@ import java.io.Serializable;
  */
 public class Node implements Serializable {
 
-    final private Id id;
+    final public Id id;
 
     static final int BASIC_DATA = 1;
 
@@ -45,8 +45,8 @@ public class Node implements Serializable {
 
     @Override
     public String toString() {
-        return "Node{" +
-                "id=" + id +
+        return
+                "{\"id\":" + id +
                 '}';
     }
 }

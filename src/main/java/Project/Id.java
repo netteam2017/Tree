@@ -9,9 +9,9 @@ import java.io.Serializable;
 public class Id {
 
 
-    private final int height;
+    public final int height;
 
-    private final int number;
+    public final int number;
 @JsonCreator
 
 public Id(){
@@ -67,9 +67,8 @@ public Id(){
 
     @Override
     public String toString() {
-        return "Id{" +
-                "height=" + height +
-                ", number=" + number +
+        return "{\"height\":" + height +
+                ", \"number\":" + number +
                 '}';
     }
 }
